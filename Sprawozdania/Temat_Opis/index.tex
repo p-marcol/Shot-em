@@ -1,0 +1,148 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Academic Title Page
+% LaTeX Template
+% Version 2.0 (17/7/17)
+%
+% This template was downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Original author:
+% WikiBooks (LaTeX - Title Creation) with modifications by:
+% Vel (vel@latextemplates.com)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+% 
+% Instructions for using this template:
+% This title page is capable of being compiled as is. This is not useful for 
+% including it in another document. To do this, you have two options: 
+%
+% 1) Copy/paste everything between \begin{document} and \end{document} 
+% starting at \begin{titlepage} and paste this into another LaTeX file where you 
+% want your title page.
+% OR
+% 2) Remove everything outside the \begin{titlepage} and \end{titlepage}, rename
+% this file and move it to the same directory as the LaTeX file you wish to add it to. 
+% Then add \input{./<new filename>.tex} to your LaTeX file where you want your
+% title page.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+\documentclass[12pt,a4paper,titlepage,hidelinks]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[polish]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{subfiles}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage{color}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{graphicx}
+
+\usepackage{mathpazo} % Use the Palatino font by default
+
+
+\newcommand\myemptypage{
+	\null
+	\thispagestyle{empty}
+	% \addtocounter{page}{-1}
+	\newpage
+}
+
+\newcommand\pageCounterMinusOne{
+	\addtocounter{page}{-1}
+}
+
+\title{\Huge{Multiplatformowe Aplikacje Mobilne}}
+\author{Jakub Barylak\\Piotr Marcol}
+\date{\today}
+
+
+\begin{document}
+
+\selectlanguage{polish}
+
+
+\begin{titlepage} % Suppresses displaying the page number on the title page and the subsequent page counts as page 1
+    \newcommand{\HRule}{\rule{\linewidth}{0.5mm}} % Defines a new command for horizontal lines, change thickness here
+
+    \center % Centre everything on the page
+
+    %------------------------------------------------
+    %	Headings
+    %------------------------------------------------
+
+    \textsc{\LARGE Politechnika Śląska}\\[0.5cm] % Main heading such as the name of your university/college
+
+    \textsc{\Large Wydział Automatyki, Elektroniki i Informatyki}\\[1cm] % Major heading such as course name
+
+    \textsc{\large Multiplatformowe Aplikacje Mobilne}\\[0.5cm] % Minor heading such as course title
+
+    %------------------------------------------------
+    %	Title
+    %------------------------------------------------
+
+    \HRule\\[0.4cm]
+
+    { {\Huge\bfseries Opis Projektu}\\[0.2cm] {\Large Aplikacja do wewnętrznego udostępniania zdjęć w trakcie wydarzeń}}\\[0.2cm] % Title of your document
+
+    \HRule\\[1.5cm]
+
+    %------------------------------------------------
+    %	Author(s)
+    %------------------------------------------------
+
+    \begin{minipage}{0.5\textwidth}
+        \begin{flushleft}
+            % \large
+            \textsc{\bfseries
+                Jakub Barylak
+                \\Piotr Marcol}\\
+            Informatyka SSI
+            \\sem. 6, ISMIP\\
+            Rok akademicki 2023/2024
+        \end{flushleft}
+    \end{minipage}
+    % ~
+    \begin{minipage}{0.4\textwidth}
+        \begin{flushright}
+            % \large
+            \textit{Prowadzący}\\
+            dr inż. Michał Sawicki
+        \end{flushright}
+    \end{minipage}
+
+
+
+    %------------------------------------------------
+    %	Logo
+    %------------------------------------------------
+
+    % \vfill\vfill
+    % \includegraphics[width=0.5\textwidth]{polslLogo.jpeg}\\[1cm] % Include a department/university logo - this will require the graphicx package
+
+    %----------------------------------------------------------------------------------------
+
+    %------------------------------------------------
+    %	Date
+    %------------------------------------------------
+
+    \vfill\vfill\vfill % Position the date 3/4 down the remaining page
+
+    {\large\today} % Date, change the \today to a set date if you want to be precise
+
+    \vfill % Push the date up 1/4 of the remaining page
+
+\end{titlepage}
+
+\newpage
+
+\section*{Opis}
+Celem projektu jest stworzenie aplikacji mobilnej, która umożliwi użytkownikom udostępnianie zdjęć w trakcie wydarzeń, szczególnie wesel. Aplikacja będzie działała na systemach Android oraz iOS. Po założeniu konta, organizatorzy będą mogli tworzyć wydarzenia, do których będą mogli zapraszać gości. Następnie każdy będzie miał możliwość dodawania zdjęć, które będą umieszczane we wspólnym albumie wydarzenia. Do każdego ze zdjęć będzie można dodawać komentarze oraz oceny. Po zakończeniu wydarzenia, organizator będzie mógł udostępnić album wszystkim gościom. Od gości nie będzie wymagane zakładanie konta celem większej wygody korzystania z aplikacji. Po określionym czasie od zakończenia wydarzenia goście będą tracili możliwość dodawania zdjęć.
+
+\end{document}
