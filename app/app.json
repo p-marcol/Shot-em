@@ -2,7 +2,7 @@
   "expo": {
     "name": "shotem",
     "slug": "shotem",
-		"scheme": "shotem",
+    "scheme": "shotem",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -12,15 +12,13 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
     "android": {
-			"googleServicesFile": "./android/app/google-services.json",
-			"package": "com.anonymous.shotem",
+      "googleServicesFile": "./android/app/google-services.json",
+      "package": "com.anonymous.shotem",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -29,7 +27,18 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-		"plugins": ["@react-native-google-signin/google-signin","@react-native-firebase/app",
-      "@react-native-firebase/auth"]
+    "plugins": [
+      "@react-native-google-signin/google-signin",
+      "@react-native-firebase/app",
+      "@react-native-firebase/auth",
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera",
+          "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone",
+          "recordAudioAndroid": true
+        }
+      ]
+    ]
   }
 }
