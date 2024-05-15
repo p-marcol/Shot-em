@@ -1,20 +1,11 @@
-import { View, Text, Button, TouchableOpacity, StyleSheet } from "react-native";
 import { useEffect, useState, createContext } from "react";
-import Firebase from "@react-native-firebase/app";
-import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
-import {
-	GoogleSignin,
-	GoogleSigninButton,
-	User,
-} from "@react-native-google-signin/google-signin";
-import env from "@env/env";
 import { Camera, CameraType } from "expo-camera";
 import { Stack } from "expo-router";
 import HelloScreen from "./HelloScreen";
-import AuthProvider from "../providers/authProvider";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function App() {
-	// const [type, setType] = useState(CameraType.back);
+	// const [type, setType] = useState(CameraType.back);s
 	// const [permission, requestPermission] = Camera.useCameraPermissions();
 
 	// if (!permission) {
@@ -37,7 +28,13 @@ export default function App() {
 	// 	);
 	// }
 
-	return <HelloScreen />;
+	// console.log("reload");
+
+	return (
+		<SafeAreaView style={{ backgroundColor: "black" }}>
+			<HelloScreen />
+		</SafeAreaView>
+	);
 }
 
 // const styles = StyleSheet.create({

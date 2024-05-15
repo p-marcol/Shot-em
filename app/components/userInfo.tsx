@@ -1,13 +1,10 @@
 import { View, Text, Image } from "react-native";
 import { useContext } from "react";
 import { AuthContext, AuthContextType } from "providers/authProvider";
-import { GoogleSigninButton } from "@react-native-google-signin/google-signin";
-
-//! Change to this to get data from context
 
 export default function UserInfo() {
 	const authContext = useContext(AuthContext) as AuthContextType;
-	console.log(authContext);
+	// console.log(authContext);
 	return (
 		<View className="flex flex-row items-center gap-3">
 			<Text className="font-bold text-lg">
