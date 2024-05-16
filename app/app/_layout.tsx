@@ -5,14 +5,14 @@ export default function Layout() {
 	return (
 		<AuthProvider>
 			<SafeAreaProvider>
-				<Stack>
-					<Stack.Screen
-						name="index"
-						options={{
-							// Hide the header for all other routes.
-							headerShown: false,
-						}}
-					/>
+				<Stack
+					screenOptions={{
+						// Set the headerShown property to false to hide the header for all routes.
+						headerShown: false,
+					}}
+				>
+					{/* <Stack.Screen name="index" /> */}
+					{/* <Stack.Screen name="joinAlbum" /> */}
 					<Stack.Screen
 						name="loginModal"
 						options={{

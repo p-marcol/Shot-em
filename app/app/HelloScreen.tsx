@@ -1,5 +1,5 @@
 import { Link, router } from "expo-router";
-import { Button, Text, View } from "react-native";
+import { Button, Pressable, Text, View } from "react-native";
 import { useContext } from "react";
 import { AuthContext, AuthContextType } from "providers/authProvider";
 import TopBar from "components/topbar";
@@ -64,10 +64,15 @@ export default function HelloScreen() {
 					<>
 						<View className="flex items-center justify-center">
 							<Text>You need to login to continue!</Text>
-							<Button
+							{/* <Button
 								title="Show login options"
 								onPress={() => router.push("/loginModal")}
-							/>
+							/> */}
+							<Link href="/loginModal" asChild>
+								<Pressable className="bg-main-orange text-2xl p-4">
+									<Text>Login</Text>
+								</Pressable>
+							</Link>
 						</View>
 					</>
 				)}
