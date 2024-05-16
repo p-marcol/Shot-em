@@ -4,7 +4,7 @@ import { ArrowLeftIcon } from "react-native-heroicons/outline";
 import { router } from "expo-router";
 
 export default function TopBar({
-	showBackButton = true,
+	showBackButton = false,
 	showShadow = false,
 	showUserInfo = true,
 }: {
