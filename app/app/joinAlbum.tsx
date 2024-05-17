@@ -1,22 +1,22 @@
-import { useCameraPermissions, CameraView } from "expo-camera/next";
+import {
+	useCameraPermissions,
+	CameraView,
+	BarcodeScanningResult,
+} from "expo-camera/next";
 import { useState, useContext } from "react";
 import TopBar from "components/topbar";
 import { AuthContext, AuthContextType } from "providers/authProvider";
-import {
-	View,
-	Text,
-	Button,
-	TouchableOpacity,
-	Pressable,
-	TextInput,
-} from "react-native";
+import { View, Text, Pressable, TextInput } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Modal } from "react-native";
+import { CameraType } from "expo-camera";
 
 export default function JoinAlbum() {
-	const [facing, setFacing] = useState("back");
 	const [permission, requestPermission] = useCameraPermissions();
 	const [modalVisible, setModalVisible] = useState(false);
+	const [code, setCode] = useState<(string | null)[]>(
+		new Array(5).fill(null)
+	);
 
 	const { user } = useContext(AuthContext) as AuthContextType;
 
@@ -25,8 +25,29 @@ export default function JoinAlbum() {
 
 	// console.log(permission);
 
-	const handleJoin = (code: string) => {
-		console.log("Joining album with code: ", code);
+	const handleJoin = () => {
+		if (code.includes(null)) {
+			console.log("Invalid code");
+			return;
+		}
+		console.log("Joining album with code: ", code.join(""));
+	};
+
+	const setCodeAtIndex = (index: number, value: string) => {
+		let newCode = [...code];
+		newCode[index] = value;
+		console.log(newCode);
+		setCode(newCode);
+	};
+
+	const setCodeFromQR = (qrData: BarcodeScanningResult) => {
+		const data = JSON.parse(qrData.data) as {
+			appNamespace: string;
+			code: string;
+		};
+		console.log(data);
+		const newCode = data.code.split("");
+		setCode(newCode);
 	};
 
 	return (
@@ -40,29 +61,34 @@ export default function JoinAlbum() {
 				}}
 			>
 				<View className="flex items-center justify-center w-screen h-screen bg-black/50 blur-xl">
-					<View className="bg-main-bg flex px-5 py-4 gap-1">
-						<Text className="text-center text-xl font-bold">
+					<View className="bg-main-bg flex p-4 gap-1 justify-center items-center rounded-xl">
+						<Text className="text-center text-2xl font-bold">
 							ENTER EVENT CODE
 						</Text>
-						<View className="flex gap-2 flex-row w-[70vw] content-stretch">
+						<View className="flex flex-row min-w-[60vw] justify-evenly">
 							{Array.from({ length: 5 }).map((_, i) => (
 								<TextInput
 									key={i}
-									className="border-2 text-xl text-center p-1 rounded-md border-gray-200 bg-white"
+									id={`code-${i}`}
+									className="border-2 text-2xl font-bold text-center py-1 px-2 rounded-md border-gray-200 bg-white"
 									maxLength={1}
+									autoComplete="off"
+									autoFocus={i === 0}
 									keyboardType="number-pad"
+									value={code[i] || ""}
 									onChange={(e) => {
-										// get to the next input field
+										setCodeAtIndex(
+											i,
+											// @ts-ignore
+											e.nativeEvent.text || null
+										);
 									}}
 								/>
 							))}
 						</View>
 
 						<Pressable
-							onPress={() => {
-								// handleJoin(code)
-								handleJoin("12345");
-							}}
+							onPress={handleJoin}
 							className="bg-main-orange p-3 mt-8"
 						>
 							<Text>JOIN</Text>
@@ -79,7 +105,7 @@ export default function JoinAlbum() {
 			<View className="bg-main-bg h-screen">
 				<TopBar
 					showBackButton={true}
-					showShadow={true}
+					showShadow={false}
 					showUserInfo={false}
 				/>
 				<View className=" flex justify-center items-center">
@@ -93,7 +119,7 @@ export default function JoinAlbum() {
 					</Text>
 					{/* @ts-ignore */}
 					<CameraView
-						facing={facing}
+						facing={CameraType.back}
 						style={{
 							width: "70%",
 							aspectRatio: 1,
@@ -101,8 +127,8 @@ export default function JoinAlbum() {
 						barcodeScannerSettings={{
 							barcodeTypes: ["qr"],
 						}}
-						onBarcodeScanned={(data) => {
-							console.log(data.data);
+						onBarcodeScanned={(qrData) => {
+							!modalVisible && setCodeFromQR(qrData);
 						}}
 					/>
 				</View>
