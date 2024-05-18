@@ -4,6 +4,7 @@ import { useContext } from "react";
 import { AuthContext, AuthContextType } from "providers/authProvider";
 import TopBar from "components/topbar";
 import { styled } from "nativewind";
+import BigOrangeButton from "components/BigOrangeButton";
 
 export default function HelloScreen() {
 	const authContext = useContext(AuthContext) as AuthContextType;
@@ -17,18 +18,11 @@ export default function HelloScreen() {
 						<View className="flex items-center justify-center w-full">
 							<View className="min-h-[50vh]"></View>
 							{/* JOIN BUTTON */}
-							<Link
+
+							<BigOrangeButton
 								href="/joinAlbum"
-								className="bg-[#FF995F] px-8 py-6 text-4xl font-bold rounded-xl text-white text-center"
-								style={{
-									shadowColor: "#974A04",
-									shadowRadius: 4,
-									shadowOpacity: 1,
-									elevation: 6,
-								}}
-							>
-								<Text>JOIN EVENT</Text>
-							</Link>
+								text="JOIN EVENT"
+							/>
 							<View className="flex gap-4 mt-1 bg-inherit">
 								{/* OPEN ALBUMS BUTTON */}
 								<Link
@@ -45,7 +39,7 @@ export default function HelloScreen() {
 								</Link>
 								{/* CREATE BUTTON */}
 								<Link
-									href=""
+									href="/createEvent"
 									className="bg-white px-4 py-2 text-2xl font-bold rounded-xl text-[#FF995F] text-center"
 									style={{
 										shadowColor: "#686868",
