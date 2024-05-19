@@ -26,7 +26,7 @@ export default function HelloScreen() {
 							<View className="flex gap-4 mt-1 bg-inherit">
 								{/* OPEN ALBUMS BUTTON */}
 								<Link
-									href=""
+									href="/albums"
 									className="bg-white px-4 py-2 text-2xl font-bold rounded-xl text-[#FF995F] text-center "
 									style={{
 										shadowColor: "#686868",

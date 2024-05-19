@@ -10,6 +10,12 @@ import { View, Text, Pressable, TextInput } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Modal } from "react-native";
 import { CameraType } from "expo-camera";
+import { ToastAndroid } from "react-native";
+import {
+	addEventToUser,
+	fetchEventFromAccessCode,
+} from "@lib/fireStoreHelpers";
+import { router } from "expo-router";
 
 export default function JoinAlbum() {
 	const [permission, requestPermission] = useCameraPermissions();
@@ -18,12 +24,12 @@ export default function JoinAlbum() {
 		new Array(5).fill(null)
 	);
 
+	const [scanned, setScanned] = useState(false);
+
 	const { user } = useContext(AuthContext) as AuthContextType;
 
 	if (!permission) return <View />;
 	if (!permission.granted) requestPermission();
-
-	// console.log(permission);
 
 	const handleJoin = () => {
 		if (code.includes(null)) {
@@ -48,6 +54,24 @@ export default function JoinAlbum() {
 		console.log(data);
 		const newCode = data.code.split("");
 		setCode(newCode);
+	};
+
+	const joinEvent = async (qrCode: BarcodeScanningResult) => {
+		console.log("SCAN");
+		setScanned(true);
+		const accessCode = qrCode.data.replace("shotem://join/", "");
+		const event = await fetchEventFromAccessCode(accessCode);
+		console.log(event);
+		if (event.empty) {
+			console.log("Pusty");
+			setScanned(false);
+			return;
+		}
+		console.log("GIT");
+		addEventToUser(user?.user.id!, event.docs[0].id);
+		ToastAndroid.show("Event joined", ToastAndroid.SHORT);
+		router.replace("/albums");
+		// TODO redirect to event page
 	};
 
 	return (
@@ -128,7 +152,8 @@ export default function JoinAlbum() {
 							barcodeTypes: ["qr"],
 						}}
 						onBarcodeScanned={(qrData) => {
-							!modalVisible && setCodeFromQR(qrData);
+							if (!scanned) joinEvent(qrData);
+							// !modalVisible && setCodeFromQR(qrData);
 						}}
 					/>
 				</View>
