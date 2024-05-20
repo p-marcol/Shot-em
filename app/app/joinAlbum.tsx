@@ -3,12 +3,18 @@ import {
 	CameraView,
 	BarcodeScanningResult,
 } from "expo-camera/next";
-import { useState, useContext } from "react";
+import React, { useState, useContext } from "react";
 import TopBar from "components/topbar";
 import { AuthContext, AuthContextType } from "providers/authProvider";
-import { View, Text, Pressable, TextInput } from "react-native";
+import {
+	View,
+	Text,
+	Pressable,
+	TextInput,
+	Keyboard,
+	Modal,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Modal } from "react-native";
 import { CameraType } from "expo-camera";
 import { ToastAndroid } from "react-native";
 import {
@@ -28,16 +34,10 @@ export default function JoinAlbum() {
 
 	const { user } = useContext(AuthContext) as AuthContextType;
 
+	const inputRefs = Array.from({ length: 5 }).map(() => React.useRef(null));
+
 	if (!permission) return <View />;
 	if (!permission.granted) requestPermission();
-
-	const handleJoin = () => {
-		if (code.includes(null)) {
-			console.log("Invalid code");
-			return;
-		}
-		console.log("Joining album with code: ", code.join(""));
-	};
 
 	const setCodeAtIndex = (index: number, value: string) => {
 		let newCode = [...code];
@@ -46,28 +46,31 @@ export default function JoinAlbum() {
 		setCode(newCode);
 	};
 
-	const setCodeFromQR = (qrData: BarcodeScanningResult) => {
-		const data = JSON.parse(qrData.data) as {
-			appNamespace: string;
-			code: string;
-		};
-		console.log(data);
-		const newCode = data.code.split("");
-		setCode(newCode);
-	};
-
-	const joinEvent = async (qrCode: BarcodeScanningResult) => {
-		console.log("SCAN");
+	const joinEventwithQR = async (qrCode: BarcodeScanningResult) => {
+		console.log("QR");
 		setScanned(true);
 		const accessCode = qrCode.data.replace("shotem://join/", "");
+		setCode(accessCode.split(""));
+		// console.log(qrCode.data);
+		joinEvent(accessCode);
+	};
+
+	const joinEventwithCode = async () => {
+		console.log("CODE");
+		setScanned(true);
+		const accessCode = code.join("");
+		joinEvent(accessCode);
+	};
+
+	const joinEvent = async (accessCode: string) => {
 		const event = await fetchEventFromAccessCode(accessCode);
-		console.log(event);
+		//console.log(event);
 		if (event.empty) {
-			console.log("Pusty");
+			ToastAndroid.show("Event not found", ToastAndroid.SHORT);
 			setScanned(false);
 			return;
 		}
-		console.log("GIT");
+		console.log("Event found: ", event.docs[0].id);
 		addEventToUser(user?.user.id!, event.docs[0].id);
 		ToastAndroid.show("Event joined", ToastAndroid.SHORT);
 		router.replace("/albums");
@@ -97,7 +100,7 @@ export default function JoinAlbum() {
 									className="border-2 text-2xl font-bold text-center py-1 px-2 rounded-md border-gray-200 bg-white"
 									maxLength={1}
 									autoComplete="off"
-									autoFocus={i === 0}
+									ref={inputRefs[i]}
 									keyboardType="number-pad"
 									value={code[i] || ""}
 									onChange={(e) => {
@@ -106,13 +109,25 @@ export default function JoinAlbum() {
 											// @ts-ignore
 											e.nativeEvent.text || null
 										);
+										// go to next input
+										if (e.nativeEvent.text) {
+											if (i < 4) {
+												console.log("focus next");
+												(
+													inputRefs[i + 1]
+														.current as TextInput | null
+												)?.focus();
+											} else {
+												Keyboard.dismiss();
+											}
+										}
 									}}
 								/>
 							))}
 						</View>
 
 						<Pressable
-							onPress={handleJoin}
+							onPress={joinEventwithCode}
 							className="bg-main-orange p-3 mt-8"
 						>
 							<Text>JOIN</Text>
@@ -152,7 +167,7 @@ export default function JoinAlbum() {
 							barcodeTypes: ["qr"],
 						}}
 						onBarcodeScanned={(qrData) => {
-							if (!scanned) joinEvent(qrData);
+							if (!scanned) joinEventwithQR(qrData);
 							// !modalVisible && setCodeFromQR(qrData);
 						}}
 					/>
