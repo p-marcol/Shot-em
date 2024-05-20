@@ -5,7 +5,7 @@ import QRCode from "react-native-qrcode-svg";
 import firestore, {
 	FirebaseFirestoreTypes,
 } from "@react-native-firebase/firestore";
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import BigOrangeButton from "components/BigOrangeButton";
 
 export default function ShareEventId() {
@@ -20,7 +20,7 @@ export default function ShareEventId() {
 		setEvent(event.data());
 	}
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		fetchEvent();
 	}, []);
 	return (
@@ -36,7 +36,10 @@ export default function ShareEventId() {
 				/>
 				<Text>Event code</Text>
 				<Text>{event?.accessCode}</Text>
-				<BigOrangeButton text="Continue to event" href={`/event/`} />
+				<BigOrangeButton
+					text="Continue to event"
+					href={`/event/${eventId}`}
+				/>
 			</View>
 		</SafeAreaView>
 	);

@@ -48,6 +48,15 @@ export default function createEvent() {
 			return;
 		}
 
+		while (true) {
+			var code = generateRandomCode();
+			const event = await firestore()
+				.collection("Events")
+				.where("accessCode", "==", code)
+				.get();
+			if (event.docs.length === 0) break;
+		}
+
 		firestore()
 			.collection("Events")
 			.add({
@@ -56,7 +65,7 @@ export default function createEvent() {
 				startDate: startDate,
 				EndDate: EndDate,
 				accessExpirationDate: accessExpirationDate,
-				accessCode: generateRandomCode(),
+				accessCode: code,
 			})
 			.then(async () => {
 				const event = await firestore()
