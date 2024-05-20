@@ -26,7 +26,7 @@ export default function createEvent() {
 	}
 
 	function generateRandomCode() {
-		return Math.floor(100000 + Math.random() * 900000).toString();
+		return Math.floor(10000 + Math.random() * 90000).toString();
 	}
 
 	async function addEvent() {
