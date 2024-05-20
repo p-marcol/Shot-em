@@ -27,26 +27,14 @@ export default function HelloScreen() {
 								{/* OPEN ALBUMS BUTTON */}
 								<Link
 									href="/albums"
-									className="bg-white px-4 py-2 text-2xl font-bold rounded-xl text-[#FF995F] text-center "
-									style={{
-										shadowColor: "#686868",
-										shadowRadius: 4,
-										shadowOpacity: 0.43,
-										elevation: 6,
-									}}
+									className="bg-white px-4 py-2 text-2xl font-bold rounded-xl text-[#FF995F] text-center shadow-md shadow-[#686868]"
 								>
 									<Text>OPEN ALBUMS</Text>
 								</Link>
 								{/* CREATE BUTTON */}
 								<Link
 									href="/createEvent"
-									className="bg-white px-4 py-2 text-2xl font-bold rounded-xl text-[#FF995F] text-center"
-									style={{
-										shadowColor: "#686868",
-										shadowRadius: 4,
-										shadowOpacity: 0.43,
-										elevation: 6,
-									}}
+									className="bg-white px-4 py-2 text-2xl font-bold rounded-xl text-[#FF995F] text-center shadow-md shadow-[#686868]"
 								>
 									<Text>CREATE EVENT</Text>
 								</Link>

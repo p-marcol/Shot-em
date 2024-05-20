@@ -18,13 +18,7 @@ export default function BigOrangeButton(props: BobProps) {
 		return (
 			<Link
 				href={props.href}
-				className="bg-[#FF995F] px-8 py-6 text-4xl font-bold rounded-xl text-white text-center"
-				style={{
-					shadowColor: "#974A04",
-					shadowRadius: 4,
-					shadowOpacity: 1,
-					elevation: 6,
-				}}
+				className="bg-[#FF995F] px-8 py-6 text-4xl font-bold rounded-xl text-white text-center shadow-xl shadow-[#974A04]"
 			>
 				<Text>{props.text}</Text>
 			</Link>
@@ -32,13 +26,7 @@ export default function BigOrangeButton(props: BobProps) {
 	} else {
 		return (
 			<Text
-				className="bg-[#FF995F] px-8 py-6 text-4xl font-bold rounded-xl text-white text-center"
-				style={{
-					shadowColor: "#974A04",
-					shadowRadius: 4,
-					shadowOpacity: 1,
-					elevation: 6,
-				}}
+				className="bg-[#FF995F] px-8 py-6 text-4xl font-bold rounded-xl text-white text-center shadow-xl shadow-[#974A04]"
 				onPress={props.onClick}
 			>
 				{props.text}

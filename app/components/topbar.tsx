@@ -14,15 +14,15 @@ export default function TopBar({
 }) {
 	return (
 		<View
-			className="h-[15vh] flex flex-row items-end p-6 justify-between w-full bg-[#F8F1E8]"
-			style={
-				showShadow && {
-					shadowColor: "black",
-					shadowOpacity: 0.1,
-					shadowRadius: 10,
-					elevation: 20,
-				}
-			}
+			className={`h-[15vh] flex flex-row items-end p-6 justify-between w-full bg-[#F8F1E8] mb-[12px] ${showShadow && "shadow-xl shadow-black"}`}
+			// style={
+			// 	showShadow && {
+			// 		shadowColor: "black",
+			// 		shadowOpacity: 0.1,
+			// 		shadowRadius: 10,
+			// 		elevation: 20,
+			//     }
+			// }
 		>
 			<View>
 				{showBackButton && (
