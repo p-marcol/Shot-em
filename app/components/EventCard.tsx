@@ -2,14 +2,26 @@ import { View, Text } from "react-native";
 import { FirebaseFirestoreTypes } from "@react-native-firebase/firestore";
 import { DateTime } from "luxon";
 import { CameraIcon, UsersIcon } from "react-native-heroicons/outline";
+import { fetchEventParticipants } from "@lib/fireStoreHelpers";
+import { useState } from "react";
 
 type EventCardProps = {};
 
 export default function EventCard({
 	event,
 }: FirebaseFirestoreTypes.DocumentData) {
+	const [userCount, setUserCount] = useState(0);
+
 	const startDate = DateTime.fromSeconds(event.startDate.seconds);
 	const endDate = DateTime.fromSeconds(event.EndDate.seconds);
+
+	async function fetchUserCount() {
+		const users = await fetchEventParticipants(event.id);
+		setUserCount(users.length);
+	}
+
+	fetchUserCount();
+
 	return (
 		<View className="flex overflow-hidden rounded-2xl min-w-[90%] w-[90%] bg-main-bg shadow-md shadow-black">
 			<View id="event-card-header" className="h-20 bg-[#D9D9D9]" />
@@ -26,7 +38,7 @@ export default function EventCard({
 						<Text> nn photos</Text>
 					</View>
 					<View className="flex flex-row gap-2 items-center">
-						<Text>nn participants</Text>
+						<Text>{userCount} participants</Text>
 						<UsersIcon color="black" size={30} />
 					</View>
 				</View>

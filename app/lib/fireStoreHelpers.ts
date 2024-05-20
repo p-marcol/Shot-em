@@ -50,3 +50,11 @@ export async function fetchEvent(eventId: string) {
 	const event = await firestore().collection("Events").doc(eventId).get();
 	return { ...event.data(), id: event.id };
 }
+
+export async function fetchEventParticipants(eventId: string) {
+	const participants = await firestore()
+		.collection("UserEvents")
+		.where("events", "array-contains", eventId)
+		.get();
+	return participants.docs.map((participant) => participant.data());
+}
