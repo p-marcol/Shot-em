@@ -23,7 +23,7 @@ export default function EventCard({
 	fetchUserCount();
 
 	return (
-		<View className="flex overflow-hidden rounded-2xl min-w-[90%] w-[90%] bg-main-bg shadow-md shadow-black">
+		<View className="flex overflow-hidden rounded-2xl min-w-[90%] w-[90%] bg-main-bg shadow-md shadow-black mb-8">
 			<View id="event-card-header" className="h-20 bg-[#D9D9D9]" />
 			<View id="event-card-body" className="p-2">
 				<Text className="text-xl font-bold">{event.name}</Text>
