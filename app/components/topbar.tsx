@@ -2,15 +2,18 @@ import { View } from "react-native";
 import UserInfo from "./userInfo";
 import { ArrowLeftIcon } from "react-native-heroicons/outline";
 import { router } from "expo-router";
+import { DrawerToggleButton } from "@react-navigation/drawer";
 
 export default function TopBar({
 	showBackButton = false,
 	showShadow = false,
 	showUserInfo = true,
+	showDrawerButton = false,
 }: {
 	showBackButton?: boolean;
 	showShadow?: boolean;
 	showUserInfo?: boolean;
+	showDrawerButton?: boolean;
 }) {
 	return (
 		<View
@@ -35,6 +38,7 @@ export default function TopBar({
 						}}
 					/>
 				)}
+				{showDrawerButton && <DrawerToggleButton />}
 			</View>
 			{showUserInfo && <UserInfo />}
 		</View>
