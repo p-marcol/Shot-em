@@ -15,8 +15,8 @@ export default function HelloScreen() {
 					// User is logged in
 					<View className="flex w-full">
 						<TopBar />
-						<View className="flex items-center justify-center w-full">
-							<View className="min-h-[50vh]"></View>
+						<View className="flex items-center justify-end w-full">
+							<View className="min-h-[40vh]"></View>
 							{/* JOIN BUTTON */}
 
 							<BigOrangeButton
@@ -24,6 +24,13 @@ export default function HelloScreen() {
 								text="JOIN EVENT"
 							/>
 							<View className="flex gap-4 mt-1 bg-inherit">
+								{/* ! TODO TEST */}
+								<Link
+									href="/drawer"
+									className="bg-white px-4 py-2 text-2xl font-bold rounded-xl text-[#FF995F] text-center shadow-md shadow-[#686868]"
+								>
+									<Text>DRAWER</Text>
+								</Link>
 								{/* OPEN ALBUMS BUTTON */}
 								<Link
 									href="/albums"
