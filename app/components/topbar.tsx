@@ -15,6 +15,11 @@ export default function TopBar({
 	showUserInfo?: boolean;
 	showDrawerButton?: boolean;
 }) {
+	if (showBackButton && showDrawerButton) {
+		throw new Error(
+			"Cannot show both back button and drawer button at the same time"
+		);
+	}
 	return (
 		<View
 			className={`h-[15vh] flex flex-row items-end p-6 justify-between w-full bg-[#F8F1E8] mb-[12px] ${showShadow && "shadow-xl shadow-black"}`}

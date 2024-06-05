@@ -18,7 +18,7 @@ export default function Modal() {
 						authContext
 							.loginWithGoogle()
 							.then(() => {
-								router.back();
+								router.replace("/");
 							})
 							.catch(() => {});
 					}}
