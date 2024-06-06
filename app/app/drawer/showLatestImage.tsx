@@ -5,9 +5,11 @@ import SafeAreaViewWrapper from "components/SafeAreaViewWrapper";
 import TopBar from "components/topbar";
 import BigOrangeButton from "components/BigOrangeButton";
 import sendImageToStorage from "lib/sendImageToStorage";
+import { AuthContext, AuthContextType } from "providers/authProvider";
 
 export default function ShowLatestImage() {
 	const imageContext = useContext(ImageContext) as ImageContextType;
+	const authContext = useContext(AuthContext) as AuthContextType;
 	const { image, dimensions } = imageContext;
 
 	return (
@@ -24,7 +26,13 @@ export default function ShowLatestImage() {
 			)}
 			<BigOrangeButton
 				text="Share"
-				onClick={() => sendImageToStorage(imageContext, "123")}
+				onClick={() =>
+					sendImageToStorage(
+						imageContext,
+						authContext,
+						"XTSKpTv6AZ4Xu6xXbeQA"
+					)
+				}
 			/>
 		</SafeAreaViewWrapper>
 	);
