@@ -34,9 +34,10 @@ export default function Albums() {
 				>
 					{events.map((event) => (
 						<Pressable
-							onTouchStart={() =>
-								router.push(`/event/${event.id}`)
-							}
+							onTouchStart={() => {
+								// console.log(event.id);
+								router.push(`/event/${event.id}`);
+							}}
 							key={event.id}
 						>
 							<EventCard event={event} key={event.id} />
