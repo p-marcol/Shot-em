@@ -3,26 +3,12 @@ import { View, Text, FlatList } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import {
-	fetchEvent,
-	fetchEventPhotos,
-	FetchEventReturnType,
-} from "@lib/fireStoreHelpers";
+import { fetchEvent } from "@lib/fireStoreHelpers";
+import fetchEventPhotos from "@lib/fetchEventPhotos";
 import TopBar from "components/topbar";
 import { FirebaseFirestoreTypes } from "@react-native-firebase/firestore";
 import PhotoCard from "components/photoCard";
-
-type PhotoType = {
-	comments: Object[];
-	eventId: string;
-	id: string;
-	photo: {
-		imageName: string;
-		owner: string;
-		timestamp: FirebaseFirestoreTypes.Timestamp;
-	};
-	url: string;
-};
+import type { FetchEventReturnType, PhotoType } from "@lib/types";
 
 export default function EventPage() {
 	const { eventId } = useLocalSearchParams();
@@ -44,13 +30,9 @@ export default function EventPage() {
 		<SafeAreaView style={{ backgroundColor: "black" }}>
 			<View className="bg-[#F8F1E8] w-full h-full">
 				<TopBar showBackButton={true} showShadow={true} />
-				{/* <Text>Tutaj będą zdjęcia :)</Text>
-				{eventPhotos.map((photo, index) => (
-					<PhotoCard photoUri={photo.url} key={index} />
-				))} */}
 				<FlatList
 					data={eventPhotos}
-					renderItem={({ item }) => <PhotoCard photoUri={item.url} />}
+					renderItem={({ item }) => <PhotoCard photo={item} />}
 					keyExtractor={(item) => item.id}
 				/>
 			</View>

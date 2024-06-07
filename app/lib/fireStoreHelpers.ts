@@ -2,6 +2,8 @@ import firestore, {
 	FirebaseFirestoreTypes,
 } from "@react-native-firebase/firestore";
 import storage, { FirebaseStorageTypes } from "@react-native-firebase/storage";
+import { FetchEventReturnType } from "./types";
+import { firebase } from "@react-native-firebase/auth";
 
 export async function addEventToUser(userId: string, accessCode: string) {
 	const userEvents = await firestore()
@@ -49,10 +51,6 @@ export async function fetchUserEvents(userId: string) {
 	return events;
 }
 
-export type FetchEventReturnType = FirebaseFirestoreTypes.DocumentData & {
-	id: string;
-};
-
 export async function fetchEvent(
 	eventId: string
 ): Promise<FetchEventReturnType> {
@@ -66,23 +64,4 @@ export async function fetchEventParticipants(eventId: string) {
 		.where("events", "array-contains", eventId)
 		.get();
 	return participants.docs.map((participant) => participant.data());
-}
-
-export async function fetchEventPhotos(eventId: string) {
-	const photosData = await firestore()
-		.collection("EventPhotos")
-		.where("eventId", "==", eventId)
-		.get();
-
-	const photos = await Promise.all(
-		photosData.docs.map(async (photo) => {
-			const photoData = photo.data();
-			const url = await storage()
-				.ref(`events/${eventId}/${photoData.photo.imageName}`)
-				.getDownloadURL();
-			return { ...photoData, id: photo.id, url };
-		})
-	);
-
-	return photos;
 }

@@ -2,6 +2,7 @@ import { createContext, useEffect, useState } from "react";
 import env from "@env/env";
 import Firebase from "@react-native-firebase/app";
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
+import firestore from "@react-native-firebase/firestore";
 import { GoogleSignin, User } from "@react-native-google-signin/google-signin";
 
 export type AuthContextType = {
@@ -44,8 +45,32 @@ export default function AuthProvider({
 			await GoogleSignin.hasPlayServices({
 				showPlayServicesUpdateDialog: true,
 			});
-			const userCredentials = await GoogleSignin.signIn();
-			setUser(userCredentials);
+			const userCredentials = await GoogleSignin.signIn().then(
+				async (userCredentials) => {
+					setUser(userCredentials);
+					const user = userCredentials.user;
+					const userRef = firestore()
+						.collection("Users")
+						.doc(user.id);
+					const userDoc = await userRef.get();
+					if (!userDoc.exists) {
+						await userRef.set({
+							name: user.name,
+							givenName: user.givenName,
+							email: user.email,
+							photo: user.photo,
+						});
+					} else {
+						await userRef.update({
+							givenName: user.givenName,
+							email: user.email,
+							photo: user.photo,
+						});
+					}
+					return userCredentials;
+				}
+			);
+			// setUser(userCredentials);
 			if (userCredentials.idToken !== null) {
 				const googleCredential = auth.GoogleAuthProvider.credential(
 					userCredentials.idToken

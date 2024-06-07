@@ -22,9 +22,10 @@ export default async function sendImageToStorage(
 	const { image } = imageContext;
 	const currentDate = DateTime.now();
 	const formattedCurrentDate = currentDate.toFormat("yyyyMMddHHmmss");
-
+	const imageFormat = image.split(".").reverse()[0];
+	// console.log(imageFormat);
 	// TODO: Change image type depending on the parameter image
-	const imageName = `${authContext.user.user.id}_${formattedCurrentDate}.jpg`;
+	const imageName = `${authContext.user.user.id}_${formattedCurrentDate}.${imageFormat}`;
 
 	console.log("Sending to server...");
 	const reference = storage().ref(`events/${eventId}/${imageName}`);
