@@ -1,6 +1,6 @@
 import { StrokeText } from "@charmy.tech/react-native-stroke-text";
 import { PhotoType } from "@lib/types";
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { Image, Pressable, Text, View } from "react-native";
 import {
 	ChatBubbleLeftEllipsisIcon,
@@ -18,7 +18,7 @@ export default function PhotoCard({ photo }: { photo: PhotoType }) {
 	const [loveCount, setLoveCount] = useState<number>(0);
 	const { url, user, RTDB } = photo;
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		Image.getSize(
 			url,
 			(width, height) => {
@@ -28,9 +28,9 @@ export default function PhotoCard({ photo }: { photo: PhotoType }) {
 				console.error(error);
 			}
 		);
-		RTDB.once("value").then((snapshot) => {
-			if (snapshot.val() !== null) setLoveCount(snapshot.val());
-		});
+		// RTDB.once("value").then((snapshot) => {
+		// 	if (snapshot.val() !== null) setLoveCount(snapshot.val());
+		// });
 	}, []);
 
 	RTDB.on("value", (snapshot) => {
