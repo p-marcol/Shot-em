@@ -1,3 +1,4 @@
+import { FirebaseDatabaseTypes } from "@react-native-firebase/database";
 import { FirebaseFirestoreTypes } from "@react-native-firebase/firestore";
 
 export type PhotoType = {
@@ -15,6 +16,7 @@ export type PhotoType = {
 		name: string;
 		photoUrl: string;
 	};
+	RTDB: FirebaseDatabaseTypes.Reference;
 };
 
 export type FetchEventReturnType = FirebaseFirestoreTypes.DocumentData & {

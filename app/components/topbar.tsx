@@ -22,7 +22,7 @@ export default function TopBar({
 	}
 	return (
 		<View
-			className={`h-[15vh] flex flex-row items-end p-6 justify-between w-full bg-[#F8F1E8] mb-[12px] ${showShadow && "shadow-xl shadow-black"}`}
+			className={`h-auto flex flex-row items-end px-6 py-4 justify-between w-full bg-[#F8F1E8] mb-[12px] ${showShadow && "shadow-xl shadow-black"}`}
 			// style={
 			// 	showShadow && {
 			// 		shadowColor: "black",

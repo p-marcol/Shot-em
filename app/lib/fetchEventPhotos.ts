@@ -3,6 +3,7 @@ import firestore, {
 	firebase,
 } from "@react-native-firebase/firestore";
 import storage from "@react-native-firebase/storage";
+import { firebase as fb } from "@react-native-firebase/database";
 import { DateTime } from "luxon";
 
 export default async function fetchEventPhotos(eventId: string) {
@@ -50,8 +51,17 @@ export default async function fetchEventPhotos(eventId: string) {
 			const url = await storage()
 				.ref(`events/${eventId}/${photo.photo.imageName}`)
 				.getDownloadURL();
-
-			return { ...photo, id: photo.photo.imageName, url, user: user };
+			const RTDB = fb
+				.app()
+				.database(process.env.FIREBASE_RTDB_URL)
+				.ref(`/likes/${photo.photo.imageName.split(".")[0]}`);
+			return {
+				...photo,
+				id: photo.photo.imageName,
+				url,
+				user: user,
+				RTDB: RTDB,
+			};
 		})
 	);
 
