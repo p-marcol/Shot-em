@@ -19,6 +19,15 @@ export type PhotoType = {
 	RTDB: FirebaseDatabaseTypes.Reference;
 };
 
+export type Event = {
+	id: string;
+	name: string;
+	startDate: Date;
+	endDate: Date;
+	accessExpires: Date;
+	accessCode: string;
+};
+
 export type FetchEventReturnType = FirebaseFirestoreTypes.DocumentData & {
 	id: string;
 };

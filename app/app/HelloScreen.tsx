@@ -26,7 +26,9 @@ export default function HelloScreen() {
 							<View className="flex gap-4 mt-1 bg-inherit">
 								{/* ! TODO TEST */}
 								<Link
-									href="/drawer"
+									//! change this to the correct event id on release
+									//@ts-ignore
+									href="event/[XTSKpTv6AZ4Xu6xXbeQA]"
 									className="bg-white px-4 py-2 text-2xl font-bold rounded-xl text-[#FF995F] text-center shadow-md shadow-[#686868]"
 								>
 									<Text>DRAWER</Text>

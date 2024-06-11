@@ -11,6 +11,7 @@ import { useContext } from "react";
 import { AuthContext, AuthContextType } from "providers/authProvider";
 import { StrokeText } from "@charmy.tech/react-native-stroke-text";
 import { UsersIcon } from "react-native-heroicons/outline";
+import EventProvider from "providers/eventProvider";
 
 const iconSize = 30;
 const iconColor = "#000000";
@@ -73,35 +74,37 @@ export default function Layout() {
 	return (
 		<SafeAreaProvider>
 			<GestureHandlerRootView style={{ flex: 1 }}>
-				<ImageProvider>
-					<Drawer
-						drawerContent={(props) => (
-							<CustomDrawerContent {...props} />
-						)}
-						screenOptions={{
-							headerShown: false,
-							drawerActiveTintColor: "#000000",
-						}}
-					>
-						<Drawer.Screen
-							name="index"
-							options={{
-								drawerLabel: "Show posts",
-								drawerIcon: () => (
-									<UsersIcon
-										size={iconSize}
-										color={iconColor}
-										strokeWidth={iconStrokeWidth}
-									/>
-								),
+				<EventProvider>
+					<ImageProvider>
+						<Drawer
+							drawerContent={(props) => (
+								<CustomDrawerContent {...props} />
+							)}
+							screenOptions={{
+								headerShown: false,
+								drawerActiveTintColor: "#000000",
 							}}
-						/>
-						<Drawer.Screen
-							name="camera"
-							options={{ drawerLabel: "Camera" }}
-						/>
-					</Drawer>
-				</ImageProvider>
+						>
+							<Drawer.Screen
+								name="index"
+								options={{
+									drawerLabel: "Show posts",
+									drawerIcon: () => (
+										<UsersIcon
+											size={iconSize}
+											color={iconColor}
+											strokeWidth={iconStrokeWidth}
+										/>
+									),
+								}}
+							/>
+							<Drawer.Screen
+								name="camera"
+								options={{ drawerLabel: "Camera" }}
+							/>
+						</Drawer>
+					</ImageProvider>
+				</EventProvider>
 			</GestureHandlerRootView>
 		</SafeAreaProvider>
 	);

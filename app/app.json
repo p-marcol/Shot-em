@@ -45,6 +45,9 @@
 					"photoPermission": "Allow $(PRODUCT_NAME) to access your photos"
 				}
 			]
-		]
+		],
+		"experiments": {
+			"typedRoutes": true
+		}
 	}
 }

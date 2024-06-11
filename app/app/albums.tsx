@@ -36,7 +36,7 @@ export default function Albums() {
 						<Pressable
 							onTouchStart={() => {
 								// console.log(event.id);
-								router.push(`/event/${event.id}`);
+								router.push(`/event/readOnly/${event.id}`);
 							}}
 							key={event.id}
 						>
