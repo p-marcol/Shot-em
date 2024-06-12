@@ -11,7 +11,10 @@ import { useContext } from "react";
 import { AuthContext, AuthContextType } from "providers/authProvider";
 import { StrokeText } from "@charmy.tech/react-native-stroke-text";
 import { UsersIcon } from "react-native-heroicons/outline";
-import EventProvider from "providers/eventProvider";
+import EventProvider, {
+	EventContext,
+	EventContextType,
+} from "providers/eventProvider";
 
 const iconSize = 30;
 const iconColor = "#000000";
@@ -19,6 +22,7 @@ const iconStrokeWidth = 2;
 
 function CustomDrawerContent(props: any) {
 	const { user } = useContext(AuthContext) as AuthContextType;
+	const { event } = useContext(EventContext) as EventContextType;
 	return (
 		<DrawerContentScrollView
 			{...props}
@@ -57,7 +61,7 @@ function CustomDrawerContent(props: any) {
 								textShadowRadius: 10,
 							}}
 						>
-							Event name!
+							{event?.name as string}
 						</Text>
 						<Text>nn photos in this album</Text>
 						<Text>nn photos overall</Text>
