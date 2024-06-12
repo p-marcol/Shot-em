@@ -1,22 +1,26 @@
 import { StrokeText } from "@charmy.tech/react-native-stroke-text";
 import { PhotoType } from "@lib/types";
-import { useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState, useContext } from "react";
 import { Image, Pressable, Text, View } from "react-native";
 import {
 	ChatBubbleLeftEllipsisIcon,
 	HeartIcon,
 } from "react-native-heroicons/outline";
+import { AuthContext, AuthContextType } from "providers/authProvider";
+import { firebase } from "@react-native-firebase/firestore";
 
 export default function PhotoCard({ photo }: { photo: PhotoType }) {
 	const [dimensions, setDimensions] = useState<{
 		width: number;
 		height: number;
 	}>({ width: 1, height: 1 });
-	const [loaded, setLoaded] = useState(true);
+	// const [loaded, setLoaded] = useState(true);
 	const [aspectRatio, setAspectRatio] = useState(true);
-	const [isLoved, setIsLoved] = useState<Boolean>(false);
+	const [isLoved, setIsLoved] = useState<Boolean>(photo.isLoved);
 	const [loveCount, setLoveCount] = useState<number>(0);
 	const { url, user, RTDB } = photo;
+
+	const authContext = useContext(AuthContext) as AuthContextType;
 
 	useLayoutEffect(() => {
 		Image.getSize(
@@ -33,10 +37,12 @@ export default function PhotoCard({ photo }: { photo: PhotoType }) {
 		// });
 	}, []);
 
-	RTDB.on("value", (snapshot) => {
-		if (snapshot.val() === null) setLoveCount(0);
-		setLoveCount(snapshot.val());
-	});
+	useEffect(() => {
+		RTDB.on("value", (snapshot) => {
+			if (snapshot.val() === null) setLoveCount(0);
+			setLoveCount(snapshot.val());
+		});
+	}, []);
 
 	const toggleAspectRatio = () => {
 		setAspectRatio(!aspectRatio);
@@ -51,9 +57,28 @@ export default function PhotoCard({ photo }: { photo: PhotoType }) {
 				return currentValue - 1;
 			}
 		}).then((transaction) => {
-			setIsLoved(!isLoved);
-			setLoveCount(transaction.snapshot.val());
-			console.log(`New post like val: ${transaction.snapshot.val()}`);
+			if (!isLoved) {
+				var doc = firebase
+					.firestore()
+					.collection("Users")
+					.doc(authContext.user?.user.id)
+					.collection("lovedPhotos")
+					.doc(photo.id)
+					.set({});
+			} else {
+				var doc = firebase
+					.firestore()
+					.collection("Users")
+					.doc(authContext.user?.user.id)
+					.collection("lovedPhotos")
+					.doc(photo.id)
+					.delete();
+			}
+			doc.then(() => {
+				setIsLoved(!isLoved);
+				setLoveCount(transaction.snapshot.val());
+				console.log(`New post like val: ${transaction.snapshot.val()}`);
+			});
 		});
 
 		setIsLoved(!isLoved);
@@ -129,7 +154,7 @@ export default function PhotoCard({ photo }: { photo: PhotoType }) {
 					</Pressable>
 					<Text className="w-auto">
 						{isLoved
-							? `You and ${loveCount - 1} other${loveCount !== 1 ? "s" : ""} love it`
+							? `You and ${loveCount - 1} other${loveCount === 1 ? "s" : ""} love it`
 							: loveCount > 1
 								? `${loveCount} people love it`
 								: loveCount === 1

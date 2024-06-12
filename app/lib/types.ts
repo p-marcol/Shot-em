@@ -17,6 +17,7 @@ export type PhotoType = {
 		photoUrl: string;
 	};
 	RTDB: FirebaseDatabaseTypes.Reference;
+	isLoved: Boolean;
 };
 
 export type Event = {

@@ -7,7 +7,8 @@ import { DateTime } from "luxon";
 export default async function sendImageToStorage(
 	imageContext: ImageContextType | null,
 	authContext: AuthContextType | null,
-	eventId: string
+	eventId: string,
+	progressCallback: (progress: number) => void
 ) {
 	if (!imageContext || !imageContext.image || !imageContext.dimensions) {
 		console.error("No image provided");

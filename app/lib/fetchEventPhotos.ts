@@ -5,8 +5,12 @@ import firestore, {
 import storage from "@react-native-firebase/storage";
 import { firebase as fb } from "@react-native-firebase/database";
 import { DateTime } from "luxon";
+import { PhotoType } from "./types";
 
-export default async function fetchEventPhotos(eventId: string) {
+export default async function fetchEventPhotos(
+	eventId: string,
+	userId: string
+) {
 	const timestamp = new firebase.firestore.FieldPath("photo", "timestamp");
 
 	const photosData = await firestore()
@@ -22,6 +26,15 @@ export default async function fetchEventPhotos(eventId: string) {
 		// from newest to oldest
 		return aTimestamp > bTimestamp ? -1 : 1;
 	});
+
+	// Fetch own likes
+	const likesDB = await firestore()
+		.collection("Users")
+		.doc(userId)
+		.collection("lovedPhotos")
+		.get();
+
+	const likes = new Set(likesDB.docs.map((like) => like.id));
 
 	const uniqueUsers = Array.from(
 		// new Set(photosData.docs.map((photo) => photo.data().photo.owner))
@@ -60,6 +73,7 @@ export default async function fetchEventPhotos(eventId: string) {
 				id: photo.photo.imageName,
 				url,
 				user: user,
+				isLoved: likes.has(photo.photo.imageName) as Boolean,
 				RTDB: RTDB,
 			};
 		})

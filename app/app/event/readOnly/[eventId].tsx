@@ -1,25 +1,29 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { View, Text, FlatList } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
-
 import { fetchEvent } from "@lib/fireStoreHelpers";
 import fetchEventPhotos from "@lib/fetchEventPhotos";
 import TopBar from "components/topbar";
 import { FirebaseFirestoreTypes } from "@react-native-firebase/firestore";
 import PhotoCard from "components/photoCard";
 import type { FetchEventReturnType, PhotoType } from "@lib/types";
+import { AuthContext, AuthContextType } from "providers/authProvider";
 
 export default function EventPage() {
 	const { eventId } = useLocalSearchParams();
 	const [eventDetails, setEventDetails] =
 		useState<FirebaseFirestoreTypes.DocumentData>();
 	const [eventPhotos, setEventPhotos] = useState<PhotoType[]>([]);
+	const authContext = useContext(AuthContext) as AuthContextType;
 
 	useEffect(() => {
 		fetchEvent(eventId as string).then((data: FetchEventReturnType) => {
 			setEventDetails(data);
-			fetchEventPhotos(eventId as string).then((photos) => {
+			fetchEventPhotos(
+				eventId as string,
+				authContext.user?.user.id as string
+			).then((photos) => {
 				setEventPhotos(photos as PhotoType[]);
 				// console.log(photos as PhotoType[]);
 			});
