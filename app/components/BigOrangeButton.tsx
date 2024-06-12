@@ -17,6 +17,7 @@ export default function BigOrangeButton(props: BobProps) {
 	if ("href" in props) {
 		return (
 			<Link
+				// @ts-ignore
 				href={props.href}
 				className="bg-[#FF995F] px-8 py-6 text-4xl font-bold rounded-xl text-white text-center shadow-xl shadow-[#974A04]"
 			>
