@@ -8,6 +8,7 @@ import {
 } from "react-native-heroicons/outline";
 import { AuthContext, AuthContextType } from "providers/authProvider";
 import { firebase } from "@react-native-firebase/firestore";
+import CommentBox from "./commentBox";
 
 export default function PhotoCard({ photo }: { photo: PhotoType }) {
 	const [dimensions, setDimensions] = useState<{
@@ -159,7 +160,7 @@ export default function PhotoCard({ photo }: { photo: PhotoType }) {
 								? `${loveCount} people love it`
 								: loveCount === 1
 									? "1 person loves it"
-									: "Noone loves it yet"}
+									: "No one loves it yet"}
 					</Text>
 				</View>
 				<Pressable onTouchStart={() => console.log("Open comments!!!")}>
@@ -170,6 +171,20 @@ export default function PhotoCard({ photo }: { photo: PhotoType }) {
 					/>
 				</Pressable>
 			</View>
+			<CommentBox
+				comment={{
+					id: "1",
+					user: {
+						id: "1",
+						name: "Jakub Barylak",
+						photoUrl:
+							"https://i.pinimg.com/736x/7b/4f/f4/7b4ff4546fab07ab4c989b58b29e7705.jpg",
+					},
+					comment:
+						"This is a very, very, very long comment that should be cut off at some point, but I don't know where that point is. I guess we'll find out soon enough.",
+					timestamp: new Date(),
+				}}
+			/>
 		</View>
 	);
 }
