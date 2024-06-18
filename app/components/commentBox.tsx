@@ -40,7 +40,7 @@ export default function CommentBox({ comment }: { comment?: Comment }) {
 	};
 
 	return (
-		<View className="w-full bg-[#F8F1E8] m-1 flex flex-row border-2 border-gray-300 rounded-md px-2 py-1 justify-between">
+		<View className="w-fit bg-[#F8F1E8] m-1 flex flex-row border-2 border-gray-300 rounded-md px-2 py-1 justify-between">
 			<View className="flex items-center justify-center w-[20%] ">
 				<View className="w-[40px] aspect-square block rounded-full overflow-hidden border-2 border-main-orange">
 					<Image

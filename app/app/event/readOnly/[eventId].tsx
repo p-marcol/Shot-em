@@ -9,6 +9,11 @@ import { FirebaseFirestoreTypes } from "@react-native-firebase/firestore";
 import PhotoCard from "components/photoCard";
 import type { FetchEventReturnType, PhotoType } from "@lib/types";
 import { AuthContext, AuthContextType } from "providers/authProvider";
+import {
+	BottomSheetModal,
+	BottomSheetView,
+	BottomSheetModalProvider,
+} from "@gorhom/bottom-sheet";
 
 export default function EventPage() {
 	const { eventId } = useLocalSearchParams();
