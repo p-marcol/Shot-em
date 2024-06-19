@@ -4,7 +4,6 @@ import { View, Text } from "react-native";
 import TopBar from "components/topbar";
 import { usePathname } from "expo-router";
 import { EventContext, EventContextType } from "providers/eventProvider";
-import MyBottomSheet from "components/MyBottomSheet";
 
 export default function Home() {
 	const eventContext = useContext(EventContext) as EventContextType;
@@ -27,7 +26,6 @@ export default function Home() {
 			<Text>{id}</Text>
 			<Text>{eventId}</Text>
 			<Text>{event?.name}</Text>
-			<MyBottomSheet />
 		</SafeAreaViewWrapper>
 	);
 }

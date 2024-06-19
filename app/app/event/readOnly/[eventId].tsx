@@ -14,6 +14,8 @@ import {
 	BottomSheetView,
 	BottomSheetModalProvider,
 } from "@gorhom/bottom-sheet";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import MyBottomSheet from "components/MyBottomSheet";
 
 export default function EventPage() {
 	const { eventId } = useLocalSearchParams();
@@ -37,14 +39,17 @@ export default function EventPage() {
 
 	return (
 		<SafeAreaView style={{ backgroundColor: "black" }}>
-			<View className="bg-[#F8F1E8] w-full h-full">
-				<TopBar showBackButton={true} showShadow={true} />
-				<FlatList
-					data={eventPhotos}
-					renderItem={({ item }) => <PhotoCard photo={item} />}
-					keyExtractor={(item) => item.id}
-				/>
-			</View>
+			<GestureHandlerRootView>
+				<View className="bg-[#F8F1E8] w-full h-full">
+					<TopBar showBackButton={true} showShadow={true} />
+					<FlatList
+						data={eventPhotos}
+						renderItem={({ item }) => <PhotoCard photo={item} />}
+						keyExtractor={(item) => item.id}
+					/>
+				</View>
+				<MyBottomSheet />
+			</GestureHandlerRootView>
 		</SafeAreaView>
 	);
 }

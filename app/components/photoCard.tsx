@@ -17,7 +17,6 @@ import {
 import { AuthContext, AuthContextType } from "providers/authProvider";
 import { firebase } from "@react-native-firebase/firestore";
 import CommentBox from "./commentBox";
-import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 
 export default function PhotoCard({ photo }: { photo: PhotoType }) {
 	const [dimensions, setDimensions] = useState<{
@@ -31,11 +30,6 @@ export default function PhotoCard({ photo }: { photo: PhotoType }) {
 	const { url, user, RTDB } = photo;
 
 	const authContext = useContext(AuthContext) as AuthContextType;
-
-	const bottomSheetRef = useRef<BottomSheet>(null);
-	const handleSheetChanges = useCallback((index: number) => {
-		console.log("handleSheetChanges", index);
-	}, []);
 
 	useLayoutEffect(() => {
 		Image.getSize(
@@ -179,7 +173,9 @@ export default function PhotoCard({ photo }: { photo: PhotoType }) {
 						</Text>
 					</View>
 					<Pressable
-						onTouchStart={() => console.log("Open comments!!!")}
+						onTouchStart={() => {
+							console.log("Open comments!!!");
+						}}
 					>
 						<ChatBubbleLeftEllipsisIcon
 							width={35}

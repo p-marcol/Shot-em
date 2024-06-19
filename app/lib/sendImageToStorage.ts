@@ -8,7 +8,7 @@ export default async function sendImageToStorage(
 	imageContext: ImageContextType | null,
 	authContext: AuthContextType | null,
 	eventId: string,
-	progressCallback: (progress: number) => void
+	progressCallback?: (progress: number) => void
 ) {
 	if (!imageContext || !imageContext.image || !imageContext.dimensions) {
 		console.error("No image provided");
@@ -33,6 +33,8 @@ export default async function sendImageToStorage(
 	const task = reference.putFile(image);
 
 	task.on("state_changed", (snapshot) => {
+		progressCallback &&
+			progressCallback(snapshot.bytesTransferred / snapshot.totalBytes);
 		console.log(
 			`${snapshot.bytesTransferred} transferred out of ${snapshot.totalBytes}`
 		);
@@ -49,7 +51,6 @@ export default async function sendImageToStorage(
 					owner: authContext.user?.user.id,
 					timestamp: currentDate,
 				},
-				comments: [],
 			});
 	});
 
