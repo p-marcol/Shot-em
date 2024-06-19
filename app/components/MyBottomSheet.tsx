@@ -14,6 +14,7 @@ import React, {
 	useContext,
 	forwardRef,
 	Ref,
+	useEffect,
 } from "react";
 import BottomSheet, {
 	BottomSheetBackdrop,
@@ -24,26 +25,31 @@ import { PaperAirplaneIcon } from "react-native-heroicons/outline";
 import { AuthContext, AuthContextType } from "providers/authProvider";
 import addComment from "@lib/addComment";
 import { BottomSheetDefaultBackdropProps } from "@gorhom/bottom-sheet/lib/typescript/components/bottomSheetBackdrop/types";
+import fetchComments from "@lib/fetchComments";
+import { Comment } from "@lib/types";
 
 export default function MyBottomSheet() {
-	const sheetRef = useRef<BottomSheet>(null);
+	const sheetRef = useRef<BottomSheet>(null); // reference to the bottom sheet
+	const [commentText, setCommentText] = useState<string>(""); // text to send as a comment
+	const { user } = useContext(AuthContext) as AuthContextType; // user context
+	const [comments, setComments] = useState<Comment[]>([]); // comments state
 
-	const [commentText, setCommentText] = useState<string>("");
-
-	const { user } = useContext(AuthContext) as AuthContextType;
-
-	const data = useMemo(
-		() =>
-			Array(50)
-				.fill(0)
-				.map((_, index) => `Item ${index}`),
-		[]
-	);
+	useEffect(() => {
+		async function fetchData() {
+			const com = await fetchComments("DbnX6ZfmFROKJ3Q8rMCb").then(
+				(comments) => {
+					console.log(comments);
+					setComments(comments as Comment[]);
+				}
+			);
+		}
+		fetchData();
+	}, []);
 
 	const snapPoints = useMemo(() => ["25%", "50%", "75%"], []);
 
 	const handleSheetChanges = useCallback((index: number) => {
-		console.log("handleSheetChanges", index);
+		// console.log("handleSheetChanges", index);
 	}, []);
 
 	const handleSnapPress = useCallback((index: number) => {
@@ -58,20 +64,7 @@ export default function MyBottomSheet() {
 		// @ts-ignore
 		({ item }) => (
 			<View className="w-full">
-				<CommentBox
-					comment={{
-						id: "1",
-						user: {
-							id: "1",
-							name: "Jakub Barylak",
-							photoUrl:
-								"https://i.pinimg.com/736x/7b/4f/f4/7b4ff4546fab07ab4c989b58b29e7705.jpg",
-						},
-						comment:
-							"This is a very, very, very long comment that should be cut off at some point, but I don't know where that point is. I guess we'll find out soon enough.",
-						timestamp: new Date(),
-					}}
-				/>
+				<CommentBox comment={item as Comment} />
 			</View>
 		),
 		[]
@@ -82,10 +75,9 @@ export default function MyBottomSheet() {
 		Keyboard.dismiss();
 		await addComment({
 			userId: user!.user.id,
-			eventId: "1",
-			photoId: "1",
-			commentText: "Yo. This is a comment.",
-		});
+			photoId: "DbnX6ZfmFROKJ3Q8rMCb",
+			commentText: commentText,
+		}).then(() => console.log("Comment added"));
 		setCommentText("");
 	};
 
@@ -159,9 +151,9 @@ export default function MyBottomSheet() {
 						</View>
 					</View>
 					<BottomSheetFlatList
-						data={data}
+						data={comments}
 						renderItem={renderItem}
-						keyExtractor={(item) => item}
+						keyExtractor={(item) => item.id}
 					/>
 				</BottomSheet>
 			</View>

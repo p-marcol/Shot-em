@@ -5,6 +5,7 @@ export type PhotoType = {
 	comments?: Object[];
 	eventId: string;
 	id: string;
+	dbId: string;
 	photo: {
 		imageName: string;
 		owner: string;
@@ -19,7 +20,7 @@ export type PhotoType = {
 export type User = {
 	id: string;
 	name: string;
-	photoUrl: string;
+	photo: string;
 };
 
 export type Event = {
@@ -33,9 +34,9 @@ export type Event = {
 
 export type Comment = {
 	id: string;
+	text: string;
+	timestamp?: FirebaseFirestoreTypes.Timestamp;
 	user: User;
-	comment: string;
-	timestamp: Date;
 	RTDB?: FirebaseDatabaseTypes.Reference;
 };
 

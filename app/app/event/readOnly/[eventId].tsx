@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from "react";
-import { View, Text, FlatList } from "react-native";
+import { View, FlatList } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { fetchEvent } from "@lib/fireStoreHelpers";
@@ -9,11 +9,6 @@ import { FirebaseFirestoreTypes } from "@react-native-firebase/firestore";
 import PhotoCard from "components/photoCard";
 import type { FetchEventReturnType, PhotoType } from "@lib/types";
 import { AuthContext, AuthContextType } from "providers/authProvider";
-import {
-	BottomSheetModal,
-	BottomSheetView,
-	BottomSheetModalProvider,
-} from "@gorhom/bottom-sheet";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import MyBottomSheet from "components/MyBottomSheet";
 

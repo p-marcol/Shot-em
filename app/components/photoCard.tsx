@@ -114,7 +114,7 @@ export default function PhotoCard({ photo }: { photo: PhotoType }) {
 					<View className="absolute top-2 z-10 w-auto left-2 flex flex-row items-center gap-x-2">
 						<View className="bg-gray-400 w-[15vw] aspect-square block rounded-full overflow-hidden border-2 border-white shadow shadow-black">
 							<Image
-								source={{ uri: user.photoUrl }}
+								source={{ uri: user.photo }}
 								style={{
 									width: "100%",
 									height: "100%",
@@ -190,12 +190,9 @@ export default function PhotoCard({ photo }: { photo: PhotoType }) {
 						user: {
 							id: "1",
 							name: "Jakub Barylak",
-							photoUrl:
-								"https://i.pinimg.com/736x/7b/4f/f4/7b4ff4546fab07ab4c989b58b29e7705.jpg",
+							photo: "https://i.pinimg.com/736x/7b/4f/f4/7b4ff4546fab07ab4c989b58b29e7705.jpg",
 						},
-						comment:
-							"This is a very, very, very long comment that should be cut off at some point, but I don't know where that point is. I guess we'll find out soon enough.",
-						timestamp: new Date(),
+						text: "This is a very, very, very long comment that should be cut off at some point, but I don't know where that point is. I guess we'll find out soon enough.",
 					}}
 				/>
 			</View>

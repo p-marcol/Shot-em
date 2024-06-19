@@ -1,14 +1,12 @@
-import { firebase } from "@react-native-firebase/firestore";
+import firestore from "@react-native-firebase/firestore";
 import { DateTime } from "luxon";
 
 export default async function addComment({
 	userId,
-	eventId,
 	photoId,
 	commentText,
 }: {
 	userId: string;
-	eventId: string;
 	photoId: string;
 	commentText: string;
 }) {
@@ -20,8 +18,16 @@ export default async function addComment({
 	const currentDate = DateTime.now();
 	console.log("NEW COMMENT");
 	console.log(userId);
-	console.log(eventId);
 	console.log(photoId);
 	console.log(currentDate);
 	console.log(commentText);
+	firestore()
+		.collection("EventPhotos")
+		.doc(photoId)
+		.collection("comments")
+		.add({
+			user: userId,
+			text: commentText,
+			timestamp: currentDate,
+		});
 }

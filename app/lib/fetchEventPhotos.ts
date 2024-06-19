@@ -11,15 +11,25 @@ export default async function fetchEventPhotos(
 	eventId: string,
 	userId: string
 ) {
+	// Create a FieldPath object
 	const timestamp = new firebase.firestore.FieldPath("photo", "timestamp");
 
-	const photosData = await firestore()
+	// Fetch photos data
+	const photosInst = await firestore()
 		.collection("EventPhotos")
 		.where("eventId", "==", eventId)
-		.get();
+		.get()
+		.then((photos) => {
+			return photos.docs.map((photo) => {
+				let data = photo.data();
+				data.dbId = photo.id;
+				return data;
+			});
+		});
 
-	const photosInst = photosData.docs.map((photo) => photo.data());
+	console.info("Reloading");
 
+	// Sort photos by timestamp
 	photosInst.sort((a, b) => {
 		const aTimestamp = DateTime.fromObject(a.photo.timestamp.c);
 		const bTimestamp = DateTime.fromObject(b.photo.timestamp.c);
@@ -50,7 +60,7 @@ export default async function fetchEventPhotos(
 			return {
 				id: user.id,
 				name: user.data()!.name,
-				photoUrl: user.data()!.photo,
+				photo: user.data()!.photo,
 			};
 		})
 	);

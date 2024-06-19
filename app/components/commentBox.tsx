@@ -44,7 +44,7 @@ export default function CommentBox({ comment }: { comment?: Comment }) {
 			<View className="flex items-center justify-center w-[20%] ">
 				<View className="w-[40px] aspect-square block rounded-full overflow-hidden border-2 border-main-orange">
 					<Image
-						source={{ uri: comment?.user.photoUrl }}
+						source={{ uri: comment?.user.photo }}
 						className="w-full h-full"
 					/>
 				</View>
@@ -52,8 +52,8 @@ export default function CommentBox({ comment }: { comment?: Comment }) {
 					{comment?.user.name}
 				</Text>
 			</View>
-			<View className="grow max-w-[60%] p-1 ">
-				<Text>{comment?.comment}</Text>
+			<View className="grow max-w-[60%] p-1 flex align-middle justify-center ">
+				<Text>{comment?.text}</Text>
 			</View>
 			<View className="flex flex-row items-center justify-end w-[25%]  gap-1">
 				<Text>{loveCount.text}</Text>
