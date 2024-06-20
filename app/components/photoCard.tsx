@@ -18,7 +18,13 @@ import { AuthContext, AuthContextType } from "providers/authProvider";
 import { firebase } from "@react-native-firebase/firestore";
 import CommentBox from "./commentBox";
 
-export default function PhotoCard({ photo }: { photo: PhotoType }) {
+export default function PhotoCard({
+	photo,
+	setCommentId,
+}: {
+	photo: PhotoType;
+	setCommentId: (setCommentId: string) => void;
+}) {
 	const [dimensions, setDimensions] = useState<{
 		width: number;
 		height: number;
@@ -90,7 +96,7 @@ export default function PhotoCard({ photo }: { photo: PhotoType }) {
 			});
 		});
 
-		setIsLoved(!isLoved);
+		// setIsLoved(!isLoved);
 	};
 
 	return (
@@ -174,7 +180,7 @@ export default function PhotoCard({ photo }: { photo: PhotoType }) {
 					</View>
 					<Pressable
 						onTouchStart={() => {
-							console.log("Open comments!!!");
+							setCommentId(photo.dbId);
 						}}
 					>
 						<ChatBubbleLeftEllipsisIcon
@@ -184,17 +190,7 @@ export default function PhotoCard({ photo }: { photo: PhotoType }) {
 						/>
 					</Pressable>
 				</View>
-				<CommentBox
-					comment={{
-						id: "1",
-						user: {
-							id: "1",
-							name: "Jakub Barylak",
-							photo: "https://i.pinimg.com/736x/7b/4f/f4/7b4ff4546fab07ab4c989b58b29e7705.jpg",
-						},
-						text: "This is a very, very, very long comment that should be cut off at some point, but I don't know where that point is. I guess we'll find out soon enough.",
-					}}
-				/>
+				<CommentBox />
 			</View>
 		</>
 	);

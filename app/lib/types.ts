@@ -38,6 +38,7 @@ export type Comment = {
 	timestamp?: FirebaseFirestoreTypes.Timestamp;
 	user: User;
 	RTDB?: FirebaseDatabaseTypes.Reference;
+	isLoved?: Boolean;
 };
 
 export type FetchEventReturnType = FirebaseFirestoreTypes.DocumentData & {

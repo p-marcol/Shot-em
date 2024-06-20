@@ -19,6 +19,9 @@ export default function EventPage() {
 	const [eventPhotos, setEventPhotos] = useState<PhotoType[]>([]);
 	const authContext = useContext(AuthContext) as AuthContextType;
 
+	const [photoId, setPhotoId] = useState<string>("");
+	console.log(photoId);
+
 	useEffect(() => {
 		fetchEvent(eventId as string).then((data: FetchEventReturnType) => {
 			setEventDetails(data);
@@ -39,11 +42,13 @@ export default function EventPage() {
 					<TopBar showBackButton={true} showShadow={true} />
 					<FlatList
 						data={eventPhotos}
-						renderItem={({ item }) => <PhotoCard photo={item} />}
+						renderItem={({ item }) => (
+							<PhotoCard photo={item} setCommentId={setPhotoId} />
+						)}
 						keyExtractor={(item) => item.id}
 					/>
 				</View>
-				<MyBottomSheet />
+				<MyBottomSheet photoId={photoId} setPhotoId={setPhotoId} />
 			</GestureHandlerRootView>
 		</SafeAreaView>
 	);

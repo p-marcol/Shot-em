@@ -28,7 +28,13 @@ import { BottomSheetDefaultBackdropProps } from "@gorhom/bottom-sheet/lib/typesc
 import fetchComments from "@lib/fetchComments";
 import { Comment } from "@lib/types";
 
-export default function MyBottomSheet() {
+export default function MyBottomSheet({
+	photoId,
+	setPhotoId,
+}: {
+	photoId: string;
+	setPhotoId: (photoId: string) => void;
+}) {
 	const sheetRef = useRef<BottomSheet>(null); // reference to the bottom sheet
 	const [commentText, setCommentText] = useState<string>(""); // text to send as a comment
 	const { user } = useContext(AuthContext) as AuthContextType; // user context
@@ -36,29 +42,34 @@ export default function MyBottomSheet() {
 
 	useEffect(() => {
 		async function fetchData() {
-			const com = await fetchComments("DbnX6ZfmFROKJ3Q8rMCb").then(
-				(comments) => {
-					console.log(comments);
+			const com = await fetchComments(photoId, user?.user.id!)
+				.then((comments) => {
+					// console.log(comments);
 					setComments(comments as Comment[]);
-				}
-			);
+				})
+				.then(() => {
+					sheetRef.current?.snapToIndex(1);
+				});
 		}
-		fetchData();
-	}, []);
+		if (photoId) fetchData();
+	}, [photoId]);
 
 	const snapPoints = useMemo(() => ["25%", "50%", "75%"], []);
 
 	const handleSheetChanges = useCallback((index: number) => {
-		// console.log("handleSheetChanges", index);
+		if (index === -1) {
+			Keyboard.dismiss();
+			setPhotoId("");
+		}
 	}, []);
 
-	const handleSnapPress = useCallback((index: number) => {
-		sheetRef.current?.snapToIndex(index);
-	}, []);
+	// const handleSnapPress = useCallback((index: number) => {
+	// 	sheetRef.current?.snapToIndex(index);
+	// }, []);
 
-	const handleClosePress = useCallback(() => {
-		sheetRef.current?.close();
-	}, []);
+	// const handleClosePress = useCallback(() => {
+	// 	sheetRef.current?.close();
+	// }, []);
 
 	const renderItem = useCallback(
 		// @ts-ignore
@@ -71,13 +82,14 @@ export default function MyBottomSheet() {
 	);
 
 	const sendComment = async () => {
-		console.log(user?.user.id);
+		// console.log(user?.user.id);
 		Keyboard.dismiss();
 		await addComment({
 			userId: user!.user.id,
-			photoId: "DbnX6ZfmFROKJ3Q8rMCb",
+			photoId: photoId,
 			commentText: commentText,
-		}).then(() => console.log("Comment added"));
+		});
+		setPhotoId(new String(photoId) as string);
 		setCommentText("");
 	};
 
@@ -112,7 +124,7 @@ export default function MyBottomSheet() {
 			>
 				<BottomSheet
 					ref={sheetRef}
-					index={1}
+					index={-1}
 					snapPoints={snapPoints}
 					onChange={handleSheetChanges}
 					bottomInset={0}
@@ -125,7 +137,7 @@ export default function MyBottomSheet() {
 						</Text>
 						<View className="flex flex-row w-full content-center">
 							<TextInput
-								className="text-lg border-2 border-gray-300 rounded-md p-1 grow"
+								className="text-base border-2 border-gray-300 rounded-md p-1 grow"
 								placeholder="comment"
 								autoComplete="off"
 								autoCorrect={true}
@@ -133,7 +145,7 @@ export default function MyBottomSheet() {
 								inputMode="text"
 								multiline={true}
 								scrollEnabled={true}
-								onSubmitEditing={() => console.log("Submit")}
+								// onSubmitEditing={() => console.log("Submit")}
 								onChangeText={(text) => setCommentText(text)}
 								value={commentText}
 								returnKeyType="search"

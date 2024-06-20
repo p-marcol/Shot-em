@@ -1,33 +1,47 @@
 "use client";
 import { Comment } from "@lib/types";
-import { useReducer, useState } from "react";
+import { firebase } from "@react-native-firebase/firestore";
+import { useContext, useEffect, useReducer, useState } from "react";
 import { Image, Pressable, Text, View } from "react-native";
 import { HeartIcon } from "react-native-heroicons/outline";
+import { AuthContext, AuthContextType } from "providers/authProvider";
+
+let getText = (newCount: number) => {
+	return newCount < 1000
+		? newCount.toString()
+		: newCount < 10000
+			? newCount / 1000 + "K"
+			: newCount < 1000000
+				? Math.floor(newCount / 1000) + "K"
+				: Math.floor(newCount / 1000000) + "M";
+};
 
 export default function CommentBox({ comment }: { comment?: Comment }) {
 	if (!comment) {
 		return <></>;
 	}
 
-	let getText = (newCount: number) => {
-		return newCount < 1000
-			? newCount.toString()
-			: newCount < 10000
-				? newCount / 1000 + "K"
-				: newCount < 1000000
-					? Math.floor(newCount / 1000) + "K"
-					: Math.floor(newCount / 1000000) + "M";
-	};
+	const { RTDB } = comment;
+	const { user } = useContext(AuthContext) as AuthContextType;
 
-	const [isLoved, setIsLoved] = useState<Boolean>(false);
+	const [isLoved, setIsLoved] = useState<Boolean>(comment.isLoved!);
 	const [loveCount, loveDispatch] = useReducer(
-		(state: { count: number; text: string }, type: string) => {
+		(
+			state: { count: number; text: string },
+			action: { type: string; val?: number }
+		) => {
 			let newCount = state.count;
-			if (type === "inc") {
+			if (action.type === "inc") {
 				newCount++;
 			}
-			if (type === "dec") {
+			if (action.type === "dec") {
 				newCount--;
+			}
+			if (action.type === "reset") {
+				newCount = 0;
+			}
+			if (action.type === "set") {
+				newCount = action.val!;
 			}
 			let newText = getText(newCount);
 			return { count: newCount, text: newText };
@@ -35,8 +49,41 @@ export default function CommentBox({ comment }: { comment?: Comment }) {
 		{ count: 0, text: getText(0) }
 	);
 
+	useEffect(() => {
+		RTDB?.on("value", (snapshot) => {
+			if (snapshot.val() === null) loveDispatch({ type: "reset" });
+			else loveDispatch({ type: "set", val: snapshot.val() });
+		});
+	}, []);
+
 	const handleHeartPress = () => {
-		loveDispatch("inc");
+		RTDB?.transaction((currentCount) => {
+			if (currentCount === null) {
+				return 1;
+			}
+			return currentCount + (isLoved ? -1 : 1);
+		}).then((transaction) => {
+			if (!isLoved) {
+				var doc = firebase
+					.firestore()
+					.collection("Users")
+					.doc(user?.user.id)
+					.collection("lovedComments")
+					.doc(comment.id)
+					.set({});
+			} else {
+				var doc = firebase
+					.firestore()
+					.collection("Users")
+					.doc(user?.user.id)
+					.collection("lovedComments")
+					.doc(comment.id)
+					.delete();
+			}
+			doc.then(() => {
+				setIsLoved(!isLoved);
+			});
+		});
 	};
 
 	return (
