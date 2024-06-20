@@ -17,6 +17,7 @@ export default function Albums() {
 		const fetchEvents = async () => {
 			const events = await fetchUserEvents(authContext.user?.user.id!);
 			setEvents(events);
+			// console.log(events);
 		};
 		fetchEvents();
 	}, []);

@@ -6,6 +6,7 @@ import storage from "@react-native-firebase/storage";
 import { firebase as fb } from "@react-native-firebase/database";
 import { DateTime } from "luxon";
 import { PhotoType } from "./types";
+import fetchComments from "./fetchComments";
 
 export default async function fetchEventPhotos(
 	eventId: string,
@@ -27,8 +28,6 @@ export default async function fetchEventPhotos(
 			});
 		});
 
-	console.info("Reloading");
-
 	// Sort photos by timestamp
 	photosInst.sort((a, b) => {
 		const aTimestamp = DateTime.fromObject(a.photo.timestamp.c);
@@ -47,7 +46,6 @@ export default async function fetchEventPhotos(
 	const likes = new Set(likesDB.docs.map((like) => like.id));
 
 	const uniqueUsers = Array.from(
-		// new Set(photosData.docs.map((photo) => photo.data().photo.owner))
 		new Set(photosInst.map((photo) => photo.photo.owner))
 	);
 
@@ -71,6 +69,9 @@ export default async function fetchEventPhotos(
 			const user = usersData.find(
 				(user) => user.id === photo.photo.owner
 			);
+			// const comment = comments.find(
+			// 	(comment) => comment.photoId === photo.id
+			// );
 			const url = await storage()
 				.ref(`events/${eventId}/${photo.photo.imageName}`)
 				.getDownloadURL();
@@ -85,7 +86,8 @@ export default async function fetchEventPhotos(
 				user: user,
 				isLoved: likes.has(photo.photo.imageName) as Boolean,
 				RTDB: RTDB,
-			};
+				// topComment: comment?.topComment[0] || null,
+			} as PhotoType;
 		})
 	);
 

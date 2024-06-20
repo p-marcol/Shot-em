@@ -5,7 +5,7 @@ import storage, { FirebaseStorageTypes } from "@react-native-firebase/storage";
 import { FetchEventReturnType } from "./types";
 import { firebase } from "@react-native-firebase/auth";
 
-export async function addEventToUser(userId: string, accessCode: string) {
+export async function addEventToUser(userId: string, eventId: string) {
 	const userEvents = await firestore()
 		.collection("UserEvents")
 		.where("userId", "==", userId)
@@ -16,12 +16,12 @@ export async function addEventToUser(userId: string, accessCode: string) {
 			.collection("UserEvents")
 			.add({
 				userId: userId,
-				events: [accessCode],
+				events: [eventId],
 			});
 	} else {
 		const userEvent = userEvents.docs[0];
 		const events = userEvent.data().events;
-		if (!events.includes(accessCode)) events.push(accessCode);
+		if (!events.includes(eventId)) events.push(eventId);
 		userEvent.ref.update({
 			events: events,
 		});
@@ -58,10 +58,18 @@ export async function fetchEvent(
 	return { ...event.data(), id: event.id };
 }
 
-export async function fetchEventParticipants(eventId: string) {
+export async function fetchEventParticipants(eventId: string): Promise<number> {
 	const participants = await firestore()
 		.collection("UserEvents")
 		.where("events", "array-contains", eventId)
 		.get();
-	return participants.docs.map((participant) => participant.data());
+	return participants.size;
+}
+
+export async function fetchPhotoCount(eventId: string): Promise<number> {
+	const photos = await firestore()
+		.collection("EventPhotos")
+		.where("eventId", "==", eventId)
+		.get();
+	return photos.size;
 }

@@ -2,7 +2,6 @@ import { FirebaseDatabaseTypes } from "@react-native-firebase/database";
 import { FirebaseFirestoreTypes } from "@react-native-firebase/firestore";
 
 export type PhotoType = {
-	comments?: Object[];
 	eventId: string;
 	id: string;
 	dbId: string;
@@ -15,6 +14,7 @@ export type PhotoType = {
 	user: User;
 	RTDB: FirebaseDatabaseTypes.Reference;
 	isLoved: Boolean;
+	topComment?: Comment | null;
 };
 
 export type User = {

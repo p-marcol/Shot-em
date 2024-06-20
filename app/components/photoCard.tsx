@@ -99,6 +99,8 @@ export default function PhotoCard({
 		// setIsLoved(!isLoved);
 	};
 
+	// console.log(photo.topComment);
+
 	return (
 		<>
 			<View className="flex w-full items-center px-[2.5%] pb-2">

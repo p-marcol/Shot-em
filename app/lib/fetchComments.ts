@@ -1,5 +1,5 @@
 import firestore from "@react-native-firebase/firestore";
-import { User } from "./types";
+import { Comment, User } from "./types";
 import { FirebaseDatabaseTypes } from "@react-native-firebase/database";
 import { firebase as fb } from "@react-native-firebase/database";
 
@@ -67,7 +67,7 @@ export default async function fetchComments(photoId: string, userId: string) {
 				...comment,
 				RTDB: RTDB,
 				isLoved: likes.has(comment.id) as Boolean,
-			};
+			} as Comment;
 		})
 	);
 	return comments;
