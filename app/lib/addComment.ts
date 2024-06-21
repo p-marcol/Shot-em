@@ -16,11 +16,11 @@ export default async function addComment({
 	}
 
 	const currentDate = DateTime.now();
-	console.log("NEW COMMENT");
-	console.log("userId:", userId);
-	console.log("photoId:", photoId);
-	console.log("commentText:", commentText);
-	console.log("currentDate:", currentDate);
+	// console.log("NEW COMMENT");
+	// console.log("userId:", userId);
+	// console.log("photoId:", photoId);
+	// console.log("commentText:", commentText);
+	// console.log("currentDate:", currentDate);
 	firestore()
 		.collection("EventPhotos")
 		.doc(photoId)

@@ -32,7 +32,7 @@ export default function Camera() {
 		const flashModes = ["on", "off", "auto"];
 		const currentIndex = flashModes.indexOf(flash);
 		const nextMode = flashModes[(currentIndex + 1) % flashModes.length];
-		console.log(nextMode);
+		// console.log(nextMode);
 		setFlash(nextMode as FlashMode);
 	};
 
@@ -43,7 +43,7 @@ export default function Camera() {
 	const takePhoto = () => {
 		if (cameraReady && cameraRef.current !== null) {
 			cameraRef.current.takePictureAsync().then((photo) => {
-				console.log(photo);
+				// console.log(photo);
 				if (photo) {
 					imageContext.setNewImage(
 						photo.uri,

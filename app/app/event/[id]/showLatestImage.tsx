@@ -65,7 +65,7 @@ export default function ShowLatestImage() {
 					<BigOrangeButton
 						text="Share"
 						onClick={async () => {
-							console.log(eventId);
+							// console.log(eventId);
 							if (uploading.uploading) return;
 							await sendImageToStorage(
 								imageContext,

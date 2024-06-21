@@ -37,7 +37,7 @@ export default function TopBar({
 						size={48}
 						color="black"
 						onTouchEnd={() => {
-							console.log(router.canGoBack());
+							// console.log(router.canGoBack());
 							if (router.canGoBack()) router.back();
 						}}
 					/>

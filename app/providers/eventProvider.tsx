@@ -24,7 +24,7 @@ export default function EventProvider({ children }: any) {
 			action: EventReducerType
 		): EventReducerType => {
 			const { eventId, event } = action;
-			console.log("Reducer", event, eventId);
+			// console.log("Reducer", event, eventId);
 			return { event: event, eventId: eventId };
 		},
 		{
@@ -38,7 +38,7 @@ export default function EventProvider({ children }: any) {
 			.collection("Events")
 			.doc(eventId)
 			.get();
-		console.log(eventDB.data());
+		// console.log(eventDB.data());
 		setEvent({ event: eventDB.data() as Event, eventId: eventId });
 	};
 

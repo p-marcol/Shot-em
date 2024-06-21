@@ -11,7 +11,7 @@ import { Event } from "@lib/types";
 
 export default function ShareEventId() {
 	const { eventId } = useLocalSearchParams();
-	console.log(eventId);
+	// console.log(eventId);
 	const [event, setEvent] = useState<Event>();
 
 	async function fetchEvent() {

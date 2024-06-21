@@ -28,20 +28,20 @@ export default async function sendImageToStorage(
 	const imageFormat = image.split(".").reverse()[0];
 	const imageName = `${authContext.user.user.id}_${formattedCurrentDate}.${imageFormat}`;
 
-	console.log("Sending to server...");
+	// console.log("Sending to server...");
 	const reference = storage().ref(`events/${eventId}/${imageName}`);
 	const task = reference.putFile(image);
 
 	task.on("state_changed", (snapshot) => {
 		progressCallback &&
 			progressCallback(snapshot.bytesTransferred / snapshot.totalBytes);
-		console.log(
-			`${snapshot.bytesTransferred} transferred out of ${snapshot.totalBytes}`
-		);
+		// console.log(
+		// 	`${snapshot.bytesTransferred} transferred out of ${snapshot.totalBytes}`
+		// );
 	});
 
 	task.then(() => {
-		console.log("Image uploaded to the bucket!");
+		// console.log("Image uploaded to the bucket!");
 		firestore()
 			.collection("EventPhotos")
 			.add({

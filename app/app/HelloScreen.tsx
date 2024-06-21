@@ -25,14 +25,14 @@ export default function HelloScreen() {
 							/>
 							<View className="flex gap-4 mt-1 bg-inherit">
 								{/* ! TODO TEST */}
-								<Link
+								{/* <Link
 									//! change this to the correct event id on release
 									//@ts-ignore
 									href="event/[9uw0He8gBeg307b6T8mi]"
 									className="bg-white px-4 py-2 text-2xl font-bold rounded-xl text-[#FF995F] text-center shadow-md shadow-[#686868]"
 								>
 									<Text>DRAWER</Text>
-								</Link>
+								</Link> */}
 								{/* OPEN ALBUMS BUTTON */}
 								<Link
 									href="/albums"
@@ -48,12 +48,12 @@ export default function HelloScreen() {
 									<Text>CREATE EVENT</Text>
 								</Link>
 								{/* SHARE BUTTON */}
-								<Link
+								{/* <Link
 									href="/share/XTSKpTv6AZ4Xu6xXbeQA"
 									className="bg-white px-4 py-2 text-2xl font-bold rounded-xl text-[#FF995F] text-center shadow-md shadow-[#686868]"
 								>
 									<Text>SHARE EVENT</Text>
-								</Link>
+								</Link> */}
 							</View>
 						</View>
 					</View>

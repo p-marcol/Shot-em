@@ -26,7 +26,7 @@ export default function CameraControls(props: CameraControlsProps) {
 			quality: 1,
 		});
 
-		console.log(result);
+		// console.log(result);
 
 		if (!result.canceled) {
 			const imageAsset = result.assets[0];
@@ -40,7 +40,7 @@ export default function CameraControls(props: CameraControlsProps) {
 	};
 
 	const openGallery = () => {
-		console.log("Open gallery");
+		// console.log("Open gallery");
 		router.push("./gallery");
 	};
 

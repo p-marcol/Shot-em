@@ -92,7 +92,7 @@ export default function PhotoCard({
 			doc.then(() => {
 				setIsLoved(!isLoved);
 				setLoveCount(transaction.snapshot.val());
-				console.log(`New post like val: ${transaction.snapshot.val()}`);
+				// console.log(`New post like val: ${transaction.snapshot.val()}`);
 			});
 		});
 

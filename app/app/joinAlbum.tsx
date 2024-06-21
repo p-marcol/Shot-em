@@ -44,7 +44,7 @@ export default function JoinAlbum() {
 	const setCodeAtIndex = (index: number, value: string) => {
 		let newCode = [...code];
 		newCode[index] = value;
-		console.log(newCode);
+		// console.log(newCode);
 		setCode(newCode);
 	};
 
@@ -62,7 +62,7 @@ export default function JoinAlbum() {
 	};
 
 	const joinEventwithCode = async () => {
-		console.log("CODE");
+		// console.log("CODE");
 		setScanned(true);
 		const accessCode = code.join("");
 		joinEvent(accessCode);
@@ -71,13 +71,13 @@ export default function JoinAlbum() {
 	const joinEvent = async (accessCode: string) => {
 		try {
 			var event = await fetchEventFromAccessCode(accessCode);
-			console.log(event);
+			// console.log(event);
 		} catch (error) {
 			ToastAndroid.show("Event not found", ToastAndroid.SHORT);
 			setScanned(false);
 			return;
 		}
-		console.log("Event found: ", event);
+		// console.log("Event found: ", event);
 		addEventToUser(user?.user.id!, event.id);
 		// ToastAndroid.show("Event joined", ToastAndroid.SHORT);
 		setEvent({ event: event, eventId: event.id });
@@ -121,7 +121,7 @@ export default function JoinAlbum() {
 										// go to next input
 										if (e.nativeEvent.text) {
 											if (i < 4) {
-												console.log("focus next");
+												// console.log("focus next");
 												(
 													inputRefs[i + 1]
 														.current as TextInput | null
