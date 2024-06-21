@@ -1,8 +1,13 @@
 import { View } from "react-native";
 import UserInfo from "./userInfo";
-import { ArrowLeftIcon } from "react-native-heroicons/outline";
+import { ArrowLeftIcon, Bars3Icon } from "react-native-heroicons/outline";
 import { router } from "expo-router";
-import { DrawerToggleButton } from "@react-navigation/drawer";
+import {
+	ParamListBase,
+	useNavigation,
+	DrawerActions,
+} from "@react-navigation/native";
+import { DrawerNavigationProp } from "@react-navigation/drawer";
 
 export default function TopBar({
 	showBackButton = false,
@@ -15,6 +20,8 @@ export default function TopBar({
 	showUserInfo?: boolean;
 	showDrawerButton?: boolean;
 }) {
+	const navigation = useNavigation<DrawerNavigationProp<ParamListBase>>();
+
 	if (showBackButton && showDrawerButton) {
 		throw new Error(
 			"Cannot show both back button and drawer button at the same time"
@@ -22,15 +29,7 @@ export default function TopBar({
 	}
 	return (
 		<View
-			className={`h-auto flex flex-row items-end px-6 py-4 justify-between w-full bg-[#F8F1E8] mb-[12px] ${showShadow && "shadow-xl shadow-black"}`}
-			// style={
-			// 	showShadow && {
-			// 		shadowColor: "black",
-			// 		shadowOpacity: 0.1,
-			// 		shadowRadius: 10,
-			// 		elevation: 20,
-			//     }
-			// }
+			className={`h-auto flex flex-row items-center px-6 pt-6 pb-4 justify-between w-full bg-[#F8F1E8] mb-[12px] ${showShadow && "shadow-xl shadow-black"}`}
 		>
 			<View>
 				{showBackButton && (
@@ -43,7 +42,15 @@ export default function TopBar({
 						}}
 					/>
 				)}
-				{showDrawerButton && <DrawerToggleButton />}
+				{showDrawerButton && (
+					<Bars3Icon
+						size={48}
+						color="black"
+						onTouchEnd={() =>
+							navigation.dispatch(DrawerActions.toggleDrawer())
+						}
+					/>
+				)}
 			</View>
 			{showUserInfo && <UserInfo />}
 		</View>

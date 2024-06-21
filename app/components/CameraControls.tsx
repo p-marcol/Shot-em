@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, Pressable } from "react-native";
 import {
 	UsersIcon,
 	PhotoIcon,
@@ -7,6 +7,7 @@ import {
 import * as ImagePicker from "expo-image-picker";
 import { useState, useContext } from "react";
 import { ImageContext, ImageContextType } from "providers/imageProvider";
+import { router } from "expo-router";
 
 type CameraControlsProps = {
 	cameraToggle: () => void;
@@ -36,15 +37,24 @@ export default function CameraControls(props: CameraControlsProps) {
 		}
 	};
 
+	const openGallery = () => {
+		console.log("Open gallery");
+		router.push("./gallery");
+	};
+
 	return (
 		<View className="flex flex-col w-full">
 			<View className="flex flex-row justify-around items-center">
-				<PhotoIcon size={48} color="black" onTouchStart={pickImage} />
+				<Pressable onPress={pickImage}>
+					<PhotoIcon size={48} color="black" />
+				</Pressable>
 				<TouchableOpacity
 					className="bg-red-400 w-20 aspect-square rounded-full border-white border-8"
 					onPress={props.takePhoto}
 				/>
-				<UsersIcon size={48} color="black" />
+				<Pressable onPress={openGallery}>
+					<UsersIcon size={48} color="black" />
+				</Pressable>
 			</View>
 		</View>
 	);

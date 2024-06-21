@@ -23,7 +23,7 @@ export default function Gallery() {
 				// console.log(photos as PhotoType[]);
 			}
 		);
-	}, []);
+	}, [eventId, user?.user.id]);
 
 	return (
 		<SafeAreaView style={{ backgroundColor: "black" }}>
