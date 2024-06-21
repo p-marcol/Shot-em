@@ -11,16 +11,17 @@ import type { FetchEventReturnType, PhotoType } from "@lib/types";
 import { AuthContext, AuthContextType } from "providers/authProvider";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import MyBottomSheet from "components/MyBottomSheet";
+import PhotosView from "components/PhotosView";
 
 export default function EventPage() {
 	const { eventId } = useLocalSearchParams();
 	const [eventDetails, setEventDetails] =
 		useState<FirebaseFirestoreTypes.DocumentData>();
 	const [eventPhotos, setEventPhotos] = useState<PhotoType[]>([]);
+	const [loading, setLoading] = useState<boolean>(true);
 	const authContext = useContext(AuthContext) as AuthContextType;
 
-	const [photoId, setPhotoId] = useState<string>("");
-	console.log(photoId);
+	// console.log(photoId);
 
 	useEffect(() => {
 		fetchEvent(eventId as string).then((data: FetchEventReturnType) => {
@@ -30,6 +31,7 @@ export default function EventPage() {
 				authContext.user?.user.id as string
 			).then((photos) => {
 				setEventPhotos(photos as PhotoType[]);
+				setLoading(false);
 				// console.log(photos as PhotoType[]);
 			});
 		});
@@ -37,19 +39,7 @@ export default function EventPage() {
 
 	return (
 		<SafeAreaView style={{ backgroundColor: "black" }}>
-			<GestureHandlerRootView>
-				<View className="bg-[#F8F1E8] w-full h-full">
-					<TopBar showBackButton={true} showShadow={true} />
-					<FlatList
-						data={eventPhotos}
-						renderItem={({ item }) => (
-							<PhotoCard photo={item} setCommentId={setPhotoId} />
-						)}
-						keyExtractor={(item) => item.id}
-					/>
-				</View>
-				<MyBottomSheet photoId={photoId} setPhotoId={setPhotoId} />
-			</GestureHandlerRootView>
+			<PhotosView photos={eventPhotos} loading={loading} />
 		</SafeAreaView>
 	);
 }
