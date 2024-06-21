@@ -1,19 +1,18 @@
-import {
-	useState,
-	useRef,
-	useContext,
-	useLayoutEffect,
-	useEffect,
-} from "react";
-import { View, Text, ToastAndroid } from "react-native";
-import { useCameraPermissions, CameraView } from "expo-camera/next";
+import { useState, useRef, useContext } from "react";
+import { Pressable, Text, View } from "react-native";
+import { useCameraPermissions, CameraView, FlashMode } from "expo-camera/next";
 import { CameraType } from "expo-camera";
 import TopBar from "components/topbar";
 import CameraControls from "components/CameraControls";
 import SafeAreaViewWrapper from "components/SafeAreaViewWrapper";
 import { ImageContext, ImageContextType } from "providers/imageProvider";
-import { EventContext, EventContextType } from "providers/eventProvider";
-import { router, useLocalSearchParams } from "expo-router";
+import {
+	ArrowPathRoundedSquareIcon,
+	BoltIcon,
+	BoltSlashIcon,
+} from "react-native-heroicons/outline";
+
+const iconSize = 50;
 
 export default function Camera() {
 	const imageContext = useContext(ImageContext) as ImageContextType;
@@ -22,16 +21,45 @@ export default function Camera() {
 	const cameraRef = useRef<CameraView>(null);
 	const [frontCamera, setFrontCamera] = useState(true);
 	const [permission, requestPermission] = useCameraPermissions();
+	const [flash, setFlash] = useState<FlashMode>("off");
 
 	if (!permission) return <View />;
 	if (!permission.granted) requestPermission();
 
-	// check if event is open, if not replace with readOnly
+	const toggleFlash = () => {
+		const flashModes = ["on", "off", "auto"];
+		const currentIndex = flashModes.indexOf(flash);
+		const nextMode = flashModes[(currentIndex + 1) % flashModes.length];
+		console.log(nextMode);
+		setFlash(nextMode as FlashMode);
+	};
+
+	const toggleFacing = () => {
+		setFrontCamera(!frontCamera);
+	};
+
+	const getProperIcon = () => {
+		switch (flash) {
+			case "on":
+				return <BoltIcon size={iconSize} color="white" />;
+			case "off":
+				return <BoltSlashIcon size={iconSize} color="white" />;
+			case "auto":
+				return (
+					<View className="relative">
+						<BoltIcon size={iconSize} color="white" />
+						<Text className="absolute -top-[4] right-[6] text-xl text-white font-bold">
+							A
+						</Text>
+					</View>
+				);
+		}
+	};
 
 	return (
 		<SafeAreaViewWrapper>
 			<TopBar showUserInfo={true} showDrawerButton={true} />
-			<View className="flex items-center justify-center">
+			<View className="flex items-center justify-center mb-10">
 				<CameraView
 					facing={frontCamera ? CameraType.front : CameraType.back}
 					style={{
@@ -40,7 +68,19 @@ export default function Camera() {
 					}}
 					onCameraReady={() => setCameraReady(true)}
 					ref={cameraRef}
+					flash={flash}
 				/>
+				<View className="absolute top-2 right-0 m-2">
+					<Pressable onPress={toggleFlash}>
+						{() => getProperIcon()}
+					</Pressable>
+					<Pressable onPress={toggleFacing} className="mt-2">
+						<ArrowPathRoundedSquareIcon
+							size={iconSize}
+							color="white"
+						/>
+					</Pressable>
+				</View>
 			</View>
 			<CameraControls
 				cameraToggle={() => setFrontCamera(!frontCamera)}

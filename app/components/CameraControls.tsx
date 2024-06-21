@@ -46,13 +46,6 @@ export default function CameraControls(props: CameraControlsProps) {
 				/>
 				<UsersIcon size={48} color="black" />
 			</View>
-			<View className="flex flex-row justify-center items-center mt-5">
-				<ArrowPathRoundedSquareIcon
-					size={48}
-					color="black"
-					onPress={props.cameraToggle}
-				/>
-			</View>
 		</View>
 	);
 }
