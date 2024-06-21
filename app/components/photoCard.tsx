@@ -161,7 +161,7 @@ export default function PhotoCard({
 				</View>
 				<View className="flex-row flex w-full justify-between px-2">
 					<View className="flex flex-row gap-2 items-center">
-						<Pressable onTouchStart={lovePhoto}>
+						<Pressable onPress={lovePhoto}>
 							<HeartIcon
 								width={35}
 								height={35}
@@ -181,7 +181,7 @@ export default function PhotoCard({
 						</Text>
 					</View>
 					<Pressable
-						onTouchStart={() => {
+						onPress={() => {
 							setCommentId(photo.dbId);
 						}}
 					>

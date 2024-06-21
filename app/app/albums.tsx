@@ -7,6 +7,7 @@ import { fetchUserEvents } from "@lib/fireStoreHelpers";
 import { FirebaseFirestoreTypes } from "@react-native-firebase/firestore";
 import EventCard from "components/EventCard";
 import { router } from "expo-router";
+import { FlatList, GestureHandlerRootView } from "react-native-gesture-handler";
 
 export default function Albums() {
 	const authContext = useContext(AuthContext) as AuthContextType;
@@ -23,29 +24,27 @@ export default function Albums() {
 	}, []);
 	return (
 		<SafeAreaView style={{ backgroundColor: "black" }}>
-			<View className="bg-[#F8F1E8] w-full h-full">
-				<TopBar showBackButton={true} showShadow={true} />
-				<ScrollView
-					className="bg-[#F8F1E8] flex flex-col "
-					style={{ overflow: "visible", marginBottom: -12 }}
-					contentContainerStyle={{
-						paddingBottom: 12,
-						alignItems: "center",
-					}}
-				>
-					{events.map((event) => (
-						<Pressable
-							onTouchStart={() => {
-								// console.log(event.id);
-								router.push(`/event/readOnly/${event.id}`);
-							}}
-							key={event.id}
-						>
-							<EventCard event={event} key={event.id} />
-						</Pressable>
-					))}
-				</ScrollView>
-			</View>
+			<GestureHandlerRootView>
+				<View className="bg-[#F8F1E8] w-full h-full">
+					<TopBar showBackButton={true} showShadow={true} />
+					<FlatList
+						data={events}
+						renderItem={({ item }) => (
+							// <Pressable
+							// 	onTouchStart={() => {
+							// 		// console.log(event.id);
+							// 		router.push(
+							// 			`/event/readOnly/${item.id}`
+							// 		);
+							// 	}}
+							// 	key={item.id}
+							// >
+							<EventCard event={item} key={item.id} />
+							// </Pressable>
+						)}
+					/>
+				</View>
+			</GestureHandlerRootView>
 		</SafeAreaView>
 	);
 }
