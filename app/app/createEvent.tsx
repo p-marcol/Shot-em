@@ -9,6 +9,7 @@ import firestore from "@react-native-firebase/firestore";
 import { AuthContext, AuthContextType } from "providers/authProvider";
 
 import Bob from "components/BigOrangeButton";
+import { addEventToUser } from "@lib/fireStoreHelpers";
 
 export default function createEvent() {
 	const authContext = useContext(AuthContext) as AuthContextType;
@@ -72,8 +73,14 @@ export default function createEvent() {
 					.collection("Events")
 					.where("owner", "==", authContext.user?.user.id)
 					.where("name", "==", eventName)
-					.get();
-				router.replace(`/share/${event.docs[0].id}`);
+					.get()
+					.then((event) => {
+						addEventToUser(
+							authContext.user!.user.id,
+							event.docs[0].id
+						);
+						router.replace(`/share/${event.docs[0].id}`);
+					});
 			});
 	}
 
