@@ -48,6 +48,10 @@ export default function JoinAlbum() {
 		setCode(newCode);
 	};
 
+	const clearCode = () => {
+		setCode(new Array(5).fill(null));
+	};
+
 	const joinEventwithQR = async (qrCode: BarcodeScanningResult) => {
 		console.log("QR");
 		setScanned(true);
@@ -131,17 +135,24 @@ export default function JoinAlbum() {
 							))}
 						</View>
 
-						<Pressable
-							onPress={joinEventwithCode}
-							className="bg-main-orange p-3 mt-8"
-						>
-							<Text>JOIN</Text>
+						<Pressable onPress={joinEventwithCode}>
+							<View className="bg-main-orange p-2 mt-4 min-w-[50%] rounded-md">
+								<Text className="text-center text-white text-2xl font-bold">
+									JOIN
+								</Text>
+							</View>
 						</Pressable>
 						<Pressable
-							onPress={() => setModalVisible(false)}
-							className="bg-white text-main-orange p-3 mt-3"
+							onPress={() => {
+								clearCode();
+								setModalVisible(false);
+							}}
 						>
-							<Text>Cancel</Text>
+							<View className="bg-white p-3 mt-3 rounded-md">
+								<Text className="font-bold text-main-orange">
+									Cancel
+								</Text>
+							</View>
 						</Pressable>
 					</View>
 				</View>
