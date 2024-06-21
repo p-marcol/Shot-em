@@ -7,7 +7,7 @@ import {
 import * as ImagePicker from "expo-image-picker";
 import { useState, useContext } from "react";
 import { ImageContext, ImageContextType } from "providers/imageProvider";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 
 type CameraControlsProps = {
 	cameraToggle: () => void;
@@ -16,6 +16,7 @@ type CameraControlsProps = {
 
 export default function CameraControls(props: CameraControlsProps) {
 	const imageContext = useContext(ImageContext) as ImageContextType;
+	const { id } = useLocalSearchParams();
 
 	const pickImage = async () => {
 		let result = await ImagePicker.launchImageLibraryAsync({
@@ -34,6 +35,7 @@ export default function CameraControls(props: CameraControlsProps) {
 				imageAsset.width,
 				imageAsset.height
 			);
+			router.navigate(`event/[${id}]/showLatestImage`);
 		}
 	};
 

@@ -4,6 +4,7 @@ export type ImageContextType = {
 	image: string | null;
 	setNewImage: (image: string, width: number, height: number) => void;
 	dimensions: { width: number; height: number } | null;
+	clearImage: () => void;
 };
 
 export const ImageContext = createContext<ImageContextType | null>(null);
@@ -24,12 +25,18 @@ export default function ImageProvider({
 		setDimensions({ width, height });
 	};
 
+	const clearImage = () => {
+		setImage(null);
+		setDimensions(null);
+	};
+
 	return (
 		<ImageContext.Provider
 			value={{
 				image,
 				setNewImage,
 				dimensions,
+				clearImage,
 			}}
 		>
 			{children}

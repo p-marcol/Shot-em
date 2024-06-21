@@ -11,6 +11,7 @@ import {
 	BoltIcon,
 	BoltSlashIcon,
 } from "react-native-heroicons/outline";
+import { router, useLocalSearchParams } from "expo-router";
 
 const iconSize = 50;
 
@@ -22,6 +23,7 @@ export default function Camera() {
 	const [frontCamera, setFrontCamera] = useState(true);
 	const [permission, requestPermission] = useCameraPermissions();
 	const [flash, setFlash] = useState<FlashMode>("off");
+	const { id } = useLocalSearchParams();
 
 	if (!permission) return <View />;
 	if (!permission.granted) requestPermission();
@@ -36,6 +38,22 @@ export default function Camera() {
 
 	const toggleFacing = () => {
 		setFrontCamera(!frontCamera);
+	};
+
+	const takePhoto = () => {
+		if (cameraReady && cameraRef.current !== null) {
+			cameraRef.current.takePictureAsync().then((photo) => {
+				console.log(photo);
+				if (photo) {
+					imageContext.setNewImage(
+						photo.uri,
+						photo.width,
+						photo.height
+					);
+					router.navigate(`event/[${id}]/showLatestImage`);
+				}
+			});
+		}
 	};
 
 	const getProperIcon = () => {
@@ -84,19 +102,7 @@ export default function Camera() {
 			</View>
 			<CameraControls
 				cameraToggle={() => setFrontCamera(!frontCamera)}
-				takePhoto={() => {
-					if (cameraReady && cameraRef.current !== null) {
-						cameraRef.current.takePictureAsync().then((photo) => {
-							console.log(photo);
-							if (photo)
-								imageContext.setNewImage(
-									photo.uri,
-									photo.width,
-									photo.height
-								);
-						});
-					}
-				}}
+				takePhoto={takePhoto}
 			/>
 		</SafeAreaViewWrapper>
 	);
