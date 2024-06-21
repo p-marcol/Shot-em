@@ -28,7 +28,7 @@ export default function HelloScreen() {
 								<Link
 									//! change this to the correct event id on release
 									//@ts-ignore
-									href="event/[XTSKpTv6AZ4Xu6xXbeQA]"
+									href="event/[9uw0He8gBeg307b6T8mi]"
 									className="bg-white px-4 py-2 text-2xl font-bold rounded-xl text-[#FF995F] text-center shadow-md shadow-[#686868]"
 								>
 									<Text>DRAWER</Text>
@@ -46,6 +46,13 @@ export default function HelloScreen() {
 									className="bg-white px-4 py-2 text-2xl font-bold rounded-xl text-[#FF995F] text-center shadow-md shadow-[#686868]"
 								>
 									<Text>CREATE EVENT</Text>
+								</Link>
+								{/* SHARE BUTTON */}
+								<Link
+									href="/share/XTSKpTv6AZ4Xu6xXbeQA"
+									className="bg-white px-4 py-2 text-2xl font-bold rounded-xl text-[#FF995F] text-center shadow-md shadow-[#686868]"
+								>
+									<Text>SHARE EVENT</Text>
 								</Link>
 							</View>
 						</View>

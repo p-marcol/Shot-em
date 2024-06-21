@@ -22,6 +22,7 @@ import {
 	fetchEventFromAccessCode,
 } from "@lib/fireStoreHelpers";
 import { router } from "expo-router";
+import { EventContext, EventContextType } from "providers/eventProvider";
 
 export default function JoinAlbum() {
 	const [permission, requestPermission] = useCameraPermissions();
@@ -33,6 +34,7 @@ export default function JoinAlbum() {
 	const [scanned, setScanned] = useState(false);
 
 	const { user } = useContext(AuthContext) as AuthContextType;
+	const { setEvent } = useContext(EventContext) as EventContextType;
 
 	const inputRefs = Array.from({ length: 5 }).map(() => React.useRef(null));
 
@@ -63,17 +65,20 @@ export default function JoinAlbum() {
 	};
 
 	const joinEvent = async (accessCode: string) => {
-		const event = await fetchEventFromAccessCode(accessCode);
-		//console.log(event);
-		if (event.empty) {
+		try {
+			var event = await fetchEventFromAccessCode(accessCode);
+			console.log(event);
+		} catch (error) {
 			ToastAndroid.show("Event not found", ToastAndroid.SHORT);
 			setScanned(false);
 			return;
 		}
-		console.log("Event found: ", event.docs[0].id);
-		addEventToUser(user?.user.id!, event.docs[0].id);
-		ToastAndroid.show("Event joined", ToastAndroid.SHORT);
-		router.replace("/albums");
+		console.log("Event found: ", event);
+		addEventToUser(user?.user.id!, event.id);
+		// ToastAndroid.show("Event joined", ToastAndroid.SHORT);
+		setEvent({ event: event, eventId: event.id });
+		// @ts-ignore
+		router.replace(`/event/[${event.id}]`);
 		// TODO redirect to event page
 	};
 

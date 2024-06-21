@@ -5,7 +5,8 @@ type BobProps = BobPropsLink | BobPropsButton;
 
 type BobPropsLink = {
 	text: string;
-	href: string;
+	href: string | { pathname: string; params: Object };
+	replace?: boolean;
 };
 
 type BobPropsButton = {
@@ -17,6 +18,7 @@ export default function BigOrangeButton(props: BobProps) {
 	if ("href" in props) {
 		return (
 			<Link
+				replace={props.replace || false}
 				// @ts-ignore
 				href={props.href}
 				className="bg-[#FF995F] px-8 py-6 text-4xl font-bold rounded-xl text-white text-center shadow-xl shadow-[#974A04]"
