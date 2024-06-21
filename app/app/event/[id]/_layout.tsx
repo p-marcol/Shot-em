@@ -7,7 +7,7 @@ import {
 	DrawerItemList,
 } from "@react-navigation/drawer";
 import { Image, Text, ToastAndroid, View } from "react-native";
-import { useContext, useLayoutEffect } from "react";
+import { useContext, useEffect, useLayoutEffect } from "react";
 import { AuthContext, AuthContextType } from "providers/authProvider";
 import { StrokeText } from "@charmy.tech/react-native-stroke-text";
 import {
@@ -24,7 +24,8 @@ const iconStrokeWidth = 2;
 
 function CustomDrawerContent(props: any) {
 	const { user } = useContext(AuthContext) as AuthContextType;
-	const { event } = useContext(EventContext) as EventContextType;
+	const { event, eventId } = useContext(EventContext) as EventContextType;
+
 	return (
 		<DrawerContentScrollView
 			{...props}
@@ -65,8 +66,8 @@ function CustomDrawerContent(props: any) {
 						>
 							{event?.name as string}
 						</Text>
-						<Text>nn photos in this album</Text>
-						<Text>nn photos overall</Text>
+						{/* <Text>nn photos in this album</Text>
+						<Text>nn photos overall</Text> */}
 					</View>
 				</View>
 				<DrawerItemList {...props} />
@@ -82,7 +83,7 @@ export default function Layout() {
 	) as EventContextType;
 	const { id } = useLocalSearchParams();
 
-	console.log("ID:", id);
+	// console.log("ID:", id);
 	useLayoutEffect(() => {
 		const fetch = async () => {
 			await fetchEvent(id as string);
@@ -95,12 +96,12 @@ export default function Layout() {
 					event.EndDate.toDate() > new Date()
 				) // pre end date
 			) {
-				console.log("Event isn't open and should be readOnly");
-				console.log(
-					event.startDate.toDate(),
-					new Date(),
-					event.EndDate.toDate()
-				);
+				// console.log("Event isn't open and should be readOnly");
+				// console.log(
+				// 	event.startDate.toDate(),
+				// 	new Date(),
+				// 	event.EndDate.toDate()
+				// );
 				ToastAndroid.show(
 					"Event's time has passed...",
 					ToastAndroid.SHORT
