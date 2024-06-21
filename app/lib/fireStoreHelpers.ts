@@ -59,6 +59,18 @@ export async function fetchUserEvents(userId: string) {
 			return { ...event.data(), id: event.id };
 		})
 	);
+	events.sort((a, b) => {
+		// check if event is currently ongoing
+		const aOngoing =
+			a.startDate.toDate() < new Date() &&
+			a.EndDate.toDate() > new Date();
+		const bOngoing =
+			b.startDate.toDate() < new Date() &&
+			b.EndDate.toDate() > new Date();
+		if (aOngoing && !bOngoing) return -1;
+		if (!aOngoing && bOngoing) return 1;
+		return b.startDate - a.startDate;
+	});
 	return events;
 }
 

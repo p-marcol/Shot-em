@@ -21,11 +21,16 @@ export default function EventCard({
 	const startDate = DateTime.fromSeconds(event.startDate.seconds);
 	const endDate = DateTime.fromSeconds(event.EndDate.seconds);
 
+	const isOngoing = startDate <= DateTime.now() && endDate >= DateTime.now();
+
 	const tap = Gesture.Tap()
 		.maxDuration(250)
 		.runOnJS(true)
 		.onEnd(() => {
-			router.push(`/event/readOnly/${event.id}`);
+			if (isOngoing)
+				// @ts-ignore
+				router.push(`/event/${event.id}`);
+			else router.push(`/event/readOnly/${event.id}`);
 		});
 
 	async function fetchUserCount() {
@@ -39,8 +44,6 @@ export default function EventCard({
 	}
 
 	fetchUserCount();
-
-	const isOngoing = startDate <= DateTime.now() && endDate >= DateTime.now();
 
 	return (
 		<GestureDetector gesture={tap}>

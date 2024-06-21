@@ -30,17 +30,7 @@ export default function Albums() {
 					<FlatList
 						data={events}
 						renderItem={({ item }) => (
-							// <Pressable
-							// 	onTouchStart={() => {
-							// 		// console.log(event.id);
-							// 		router.push(
-							// 			`/event/readOnly/${item.id}`
-							// 		);
-							// 	}}
-							// 	key={item.id}
-							// >
 							<EventCard event={item} key={item.id} />
-							// </Pressable>
 						)}
 					/>
 				</View>
