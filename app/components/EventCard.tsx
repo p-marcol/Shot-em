@@ -29,7 +29,7 @@ export default function EventCard({
 		.onEnd(() => {
 			if (isOngoing)
 				// @ts-ignore
-				router.push(`/event/${event.id}`);
+				router.replace(`/event/${event.id}`);
 			else router.push(`/event/readOnly/${event.id}`);
 		});
 

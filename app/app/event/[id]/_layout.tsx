@@ -6,15 +6,13 @@ import {
 	DrawerContentScrollView,
 	DrawerItemList,
 } from "@react-navigation/drawer";
-import { Image, Text, View } from "react-native";
-import { useContext } from "react";
+import { Image, Text, ToastAndroid, View } from "react-native";
+import { useContext, useLayoutEffect } from "react";
 import { AuthContext, AuthContextType } from "providers/authProvider";
 import { StrokeText } from "@charmy.tech/react-native-stroke-text";
 import { UsersIcon } from "react-native-heroicons/outline";
-import EventProvider, {
-	EventContext,
-	EventContextType,
-} from "providers/eventProvider";
+import { EventContext, EventContextType } from "providers/eventProvider";
+import { router, useLocalSearchParams } from "expo-router";
 
 const iconSize = 30;
 const iconColor = "#000000";
@@ -75,22 +73,56 @@ function CustomDrawerContent(props: any) {
 }
 
 export default function Layout() {
+	const { event, eventId, fetchEvent } = useContext(
+		EventContext
+	) as EventContextType;
+	const { id } = useLocalSearchParams();
+
+	console.log("ID:", id);
+	useLayoutEffect(() => {
+		const fetch = async () => {
+			await fetchEvent(id as string);
+		};
+		fetch().then(() => {
+			if (!event) return;
+			if (
+				!(
+					event.startDate.toDate() < new Date() && // past start date
+					event.EndDate.toDate() > new Date()
+				) // pre end date
+			) {
+				console.log("Event isn't open and should be readOnly");
+				console.log(
+					event.startDate.toDate(),
+					new Date(),
+					event.EndDate.toDate()
+				);
+				ToastAndroid.show(
+					"Event's time has passed...",
+					ToastAndroid.SHORT
+				);
+				router.replace(`/event/readOnly/${event?.id}`);
+			}
+		});
+	}, []);
+
 	return (
 		<SafeAreaProvider>
 			<GestureHandlerRootView style={{ flex: 1 }}>
-				{/* <EventProvider> */}
 				<ImageProvider>
 					<Drawer
 						drawerContent={(props) => (
 							<CustomDrawerContent {...props} />
 						)}
+						backBehavior="initialRoute"
 						screenOptions={{
 							headerShown: false,
 							drawerActiveTintColor: "#000000",
 						}}
+						initialRouteName="camera"
 					>
 						<Drawer.Screen
-							name="index"
+							name="gallery"
 							options={{
 								drawerLabel: "Show posts",
 								drawerIcon: () => (
@@ -108,7 +140,6 @@ export default function Layout() {
 						/>
 					</Drawer>
 				</ImageProvider>
-				{/* </EventProvider> */}
 			</GestureHandlerRootView>
 		</SafeAreaProvider>
 	);
