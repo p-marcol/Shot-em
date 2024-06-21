@@ -2,7 +2,7 @@ import firestore, {
 	FirebaseFirestoreTypes,
 } from "@react-native-firebase/firestore";
 import storage, { FirebaseStorageTypes } from "@react-native-firebase/storage";
-import { FetchEventReturnType } from "./types";
+import { Event, FetchEventReturnType } from "./types";
 import { firebase } from "@react-native-firebase/auth";
 
 export async function addEventToUser(userId: string, eventId: string) {
@@ -28,11 +28,22 @@ export async function addEventToUser(userId: string, eventId: string) {
 	}
 }
 
-export async function fetchEventFromAccessCode(accessCode: string) {
-	return await firestore()
+export async function fetchEventFromAccessCode(
+	accessCode: string
+): Promise<Event> {
+	const event = await firestore()
 		.collection("Events")
 		.where("accessCode", "==", accessCode)
-		.get();
+		.get()
+		.then((querySnapshot) => {
+			const event = querySnapshot.docs[0].data() as Event;
+			event.id = querySnapshot.docs[0].id;
+			return event;
+		})
+		.catch((error) => {
+			throw new Error("Event not found");
+		});
+	return event;
 }
 
 export async function fetchUserEvents(userId: string) {

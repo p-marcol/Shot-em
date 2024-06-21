@@ -78,37 +78,37 @@ export default function Layout() {
 	return (
 		<SafeAreaProvider>
 			<GestureHandlerRootView style={{ flex: 1 }}>
-				<EventProvider>
-					<ImageProvider>
-						<Drawer
-							drawerContent={(props) => (
-								<CustomDrawerContent {...props} />
-							)}
-							screenOptions={{
-								headerShown: false,
-								drawerActiveTintColor: "#000000",
+				{/* <EventProvider> */}
+				<ImageProvider>
+					<Drawer
+						drawerContent={(props) => (
+							<CustomDrawerContent {...props} />
+						)}
+						screenOptions={{
+							headerShown: false,
+							drawerActiveTintColor: "#000000",
+						}}
+					>
+						<Drawer.Screen
+							name="index"
+							options={{
+								drawerLabel: "Show posts",
+								drawerIcon: () => (
+									<UsersIcon
+										size={iconSize}
+										color={iconColor}
+										strokeWidth={iconStrokeWidth}
+									/>
+								),
 							}}
-						>
-							<Drawer.Screen
-								name="index"
-								options={{
-									drawerLabel: "Show posts",
-									drawerIcon: () => (
-										<UsersIcon
-											size={iconSize}
-											color={iconColor}
-											strokeWidth={iconStrokeWidth}
-										/>
-									),
-								}}
-							/>
-							<Drawer.Screen
-								name="camera"
-								options={{ drawerLabel: "Camera" }}
-							/>
-						</Drawer>
-					</ImageProvider>
-				</EventProvider>
+						/>
+						<Drawer.Screen
+							name="camera"
+							options={{ drawerLabel: "Camera" }}
+						/>
+					</Drawer>
+				</ImageProvider>
+				{/* </EventProvider> */}
 			</GestureHandlerRootView>
 		</SafeAreaProvider>
 	);

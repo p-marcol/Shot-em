@@ -6,11 +6,13 @@ import TopBar from "components/topbar";
 import BigOrangeButton from "components/BigOrangeButton";
 import sendImageToStorage from "lib/sendImageToStorage";
 import { AuthContext, AuthContextType } from "providers/authProvider";
+import { EventContext, EventContextType } from "providers/eventProvider";
 
 export default function ShowLatestImage() {
 	const imageContext = useContext(ImageContext) as ImageContextType;
 	const authContext = useContext(AuthContext) as AuthContextType;
 	const { image, dimensions } = imageContext;
+	const { eventId } = useContext(EventContext) as EventContextType;
 
 	return (
 		<SafeAreaViewWrapper>
@@ -26,13 +28,10 @@ export default function ShowLatestImage() {
 			)}
 			<BigOrangeButton
 				text="Share"
-				onClick={() =>
-					sendImageToStorage(
-						imageContext,
-						authContext,
-						"XTSKpTv6AZ4Xu6xXbeQA"
-					)
-				}
+				onClick={() => {
+					console.log(eventId);
+					sendImageToStorage(imageContext, authContext, eventId!);
+				}}
 			/>
 		</SafeAreaViewWrapper>
 	);

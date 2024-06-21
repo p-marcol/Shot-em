@@ -5,13 +5,14 @@ import type { Event } from "@lib/types";
 
 export type EventContextType = {
 	event?: Event;
-	eventId?: String;
+	eventId?: string;
 	fetchEvent: (eventId: string) => void;
+	setEvent: (event: EventReducerType) => void;
 };
 
 type EventReducerType = {
 	event?: Event;
-	eventId?: String;
+	eventId?: string;
 };
 
 export const EventContext = createContext<EventContextType | null>(null);
@@ -23,7 +24,8 @@ export default function EventProvider({ children }: any) {
 			action: EventReducerType
 		): EventReducerType => {
 			const { eventId, event } = action;
-			return { ...state, event: event, eventId: eventId };
+			console.log("Reducer", event, eventId);
+			return { event: event, eventId: eventId };
 		},
 		{
 			event: undefined,
@@ -36,12 +38,18 @@ export default function EventProvider({ children }: any) {
 			.collection("Events")
 			.doc(eventId)
 			.get();
+		console.log(eventDB.data());
 		setEvent({ event: eventDB.data() as Event, eventId: eventId });
 	};
 
 	return (
 		<EventContext.Provider
-			value={{ event: event.event, eventId: event.eventId, fetchEvent }}
+			value={{
+				event: event.event,
+				eventId: event.eventId,
+				fetchEvent,
+				setEvent,
+			}}
 		>
 			{children}
 		</EventContext.Provider>

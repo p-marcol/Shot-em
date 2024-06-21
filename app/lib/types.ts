@@ -26,9 +26,10 @@ export type User = {
 export type Event = {
 	id: string;
 	name: string;
-	startDate: Date;
-	endDate: Date;
-	accessExpires: Date;
+	startDate: FirebaseFirestoreTypes.Timestamp;
+	// Why TF is there capital E in EndDate?
+	EndDate: FirebaseFirestoreTypes.Timestamp;
+	accessExpires: FirebaseFirestoreTypes.Timestamp;
 	accessCode: string;
 };
 
