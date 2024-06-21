@@ -10,7 +10,11 @@ import { Image, Text, ToastAndroid, View } from "react-native";
 import { useContext, useLayoutEffect } from "react";
 import { AuthContext, AuthContextType } from "providers/authProvider";
 import { StrokeText } from "@charmy.tech/react-native-stroke-text";
-import { UsersIcon } from "react-native-heroicons/outline";
+import {
+	CameraIcon,
+	QrCodeIcon,
+	UsersIcon,
+} from "react-native-heroicons/outline";
 import { EventContext, EventContextType } from "providers/eventProvider";
 import { router, useLocalSearchParams } from "expo-router";
 
@@ -118,9 +122,26 @@ export default function Layout() {
 						screenOptions={{
 							headerShown: false,
 							drawerActiveTintColor: "#000000",
+							drawerLabelStyle: {
+								fontSize: 18,
+								fontWeight: "bold",
+							},
 						}}
 						initialRouteName="camera"
 					>
+						<Drawer.Screen
+							name="camera"
+							options={{
+								drawerLabel: "Camera",
+								drawerIcon: () => (
+									<CameraIcon
+										size={iconSize}
+										color={iconColor}
+										strokeWidth={iconStrokeWidth}
+									/>
+								),
+							}}
+						/>
 						<Drawer.Screen
 							name="gallery"
 							options={{
@@ -135,8 +156,21 @@ export default function Layout() {
 							}}
 						/>
 						<Drawer.Screen
-							name="camera"
-							options={{ drawerLabel: "Camera" }}
+							name="share"
+							options={{
+								drawerLabel: "Show QR code",
+								drawerIcon: () => (
+									<QrCodeIcon
+										size={iconSize}
+										color={iconColor}
+										strokeWidth={iconStrokeWidth}
+									/>
+								),
+							}}
+						/>
+						<Drawer.Screen
+							name="showLatestImage"
+							options={{ drawerItemStyle: { display: "none" } }}
 						/>
 					</Drawer>
 				</ImageProvider>
