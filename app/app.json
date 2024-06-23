@@ -8,9 +8,9 @@
 		"icon": "./assets/icon.png",
 		"userInterfaceStyle": "light",
 		"splash": {
-			"image": "./assets/splash.png",
+			"image": "./assets/icon.png",
 			"resizeMode": "contain",
-			"backgroundColor": "#ffffff"
+			"backgroundColor": "#FF995F"
 		},
 		"assetBundlePatterns": ["**/*"],
 		"ios": {
@@ -57,7 +57,7 @@
 		},
 		"extra": {
 			"eas": {
-				"projectId": "XXXXXXXXXXXXXXXX"
+				"projectId": "a8b63385-5cb6-4e53-873b-f7a84591c319"
 			}
 		}
 	}
