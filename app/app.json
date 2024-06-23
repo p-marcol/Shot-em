@@ -22,7 +22,11 @@
 			"adaptiveIcon": {
 				"foregroundImage": "./assets/adaptive-icon.png",
 				"backgroundColor": "#ffffff"
-			}
+			},
+			"permissions": [
+				"android.permission.CAMERA",
+				"android.permission.RECORD_AUDIO"
+			]
 		},
 		"web": {
 			"favicon": "./assets/favicon.png"
@@ -44,10 +48,17 @@
 				{
 					"photoPermission": "Allow $(PRODUCT_NAME) to access your photos"
 				}
-			]
+			],
+			"expo-router",
+			"expo-secure-store"
 		],
 		"experiments": {
 			"typedRoutes": true
+		},
+		"extra": {
+			"eas": {
+				"projectId": "XXXXXXXXXXXXXXXX"
+			}
 		}
 	}
 }

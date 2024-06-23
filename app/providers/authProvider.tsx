@@ -27,6 +27,14 @@ export default function AuthProvider({
 			offlineAccess: false,
 		});
 
+		// console.log(env.FIREBASE_WEB_API_KEY);
+		// console.log(env.FIREBASE_AUTH_DOMAIN);
+		// console.log(env.FIREBASE_PROJECT_ID);
+		// console.log(env.FIREBASE_STORAGE_BUCKET);
+		// console.log(env.FIREBASE_MESSAGING_SENDER_ID);
+		// console.log(env.FIREBASE_APP_ID);
+		// console.log(env.FIREBASE_DATABASE_URL);
+
 		if (Firebase.apps.length === 0) {
 			Firebase.initializeApp({
 				apiKey: env.FIREBASE_WEB_API_KEY,
