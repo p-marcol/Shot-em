@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useLayoutEffect, useState } from "react";
 import env from "@env/env";
 import Firebase from "@react-native-firebase/app";
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
@@ -9,6 +9,7 @@ export type AuthContextType = {
 	user: User | null;
 	setUser: (user: User | null) => void;
 	loginWithGoogle: () => Promise<void>;
+	loading: boolean;
 };
 
 export const AuthContext = createContext<AuthContextType | null>(null);
@@ -20,6 +21,7 @@ export default function AuthProvider({
 }) {
 	const [user, setUser] = useState<User | null>(null);
 	const [error, setError] = useState<string | null>(null);
+	const [loading, setLoading] = useState<boolean>(true);
 
 	useEffect(() => {
 		GoogleSignin.configure({
@@ -46,6 +48,10 @@ export default function AuthProvider({
 				databaseURL: env.FIREBASE_DATABASE_URL,
 			});
 		}
+	}, []);
+
+	useLayoutEffect(() => {
+		loginWithGoogle();
 	}, []);
 
 	async function loginWithGoogle() {
@@ -87,6 +93,7 @@ export default function AuthProvider({
 				setError(null);
 			} else
 				setError("Cannot sign in to Firebase: Google idToken is null.");
+			setLoading(false);
 		} catch (error) {
 			console.error(error);
 		}
@@ -98,6 +105,7 @@ export default function AuthProvider({
 				user: user,
 				setUser: setUser,
 				loginWithGoogle: loginWithGoogle,
+				loading: loading,
 			}}
 		>
 			{children}
