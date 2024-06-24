@@ -1,33 +1,64 @@
 import PhotosView from "components/PhotosView";
-import { useLocalSearchParams } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { EventContext, EventContextType } from "providers/eventProvider";
-import { useContext, useEffect, useState } from "react";
-import { fetchEvent } from "@lib/fireStoreHelpers";
+import {
+	Dispatch,
+	SetStateAction,
+	useCallback,
+	useContext,
+	useState,
+} from "react";
 import fetchEventPhotos from "@lib/fetchEventPhotos";
 import { AuthContext, AuthContextType } from "providers/authProvider";
-import { FetchEventReturnType, PhotoType } from "@lib/types";
+import { PhotoType } from "@lib/types";
+import { DateTime } from "luxon";
+import { useFocusEffect } from "@react-navigation/native";
 
 export default function Gallery() {
-	const { eventId } = useContext(EventContext) as EventContextType;
+	const { eventId, eventPhotos, setEventPhotos } = useContext(
+		EventContext
+	) as EventContextType;
 	const { user } = useContext(AuthContext) as AuthContextType;
 
-	const [eventPhotos, setEventPhotos] = useState<PhotoType[]>([]);
 	const [loading, setLoading] = useState<boolean>(true);
 
-	useEffect(() => {
-		fetchEventPhotos(eventId as string, user?.user.id as string).then(
-			(photos) => {
+	useFocusEffect(
+		useCallback(() => {
+			console.log("Gallery focused");
+			setLoading(true);
+			fetchEventPhotos(eventId as string, user?.user.id as string)
+				.then((photos: PhotoType[]) => {
+					// console.log("photos fetched", DateTime.now().toISO());
+					setEventPhotos(photos as PhotoType[]);
+					// console.log(photos.map((photo) => photo.user.name));
+				})
+				.finally(() => {
+					setLoading(false);
+				});
+		}, [])
+	);
+
+	const refreshFunction = async (
+		setRefreshing: Dispatch<SetStateAction<boolean>>
+	) => {
+		setRefreshing(true);
+		fetchEventPhotos(eventId as string, user?.user.id as string)
+			.then((photos) => {
+				console.log("photos fetched", DateTime.now().toISO());
 				setEventPhotos(photos as PhotoType[]);
-				setLoading(false);
-				// console.log(photos as PhotoType[]);
-			}
-		);
-	}, [eventId, user?.user.id]);
+			})
+			.finally(() => {
+				setRefreshing(false);
+			});
+	};
 
 	return (
 		<SafeAreaView style={{ backgroundColor: "black" }}>
-			<PhotosView photos={eventPhotos} loading={loading} />
+			<PhotosView
+				photos={eventPhotos}
+				loading={loading}
+				refreshFunction={refreshFunction}
+			/>
 		</SafeAreaView>
 	);
 }

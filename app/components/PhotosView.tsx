@@ -4,29 +4,48 @@ import { Text, View } from "react-native";
 import PhotoCard from "./photoCard";
 import MyBottomSheet from "./MyBottomSheet";
 import TopBar from "./topbar";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 
 export default function PhotosView({
 	photos,
 	loading,
+	refreshFunction,
 }: {
-	photos: PhotoType[];
+	photos?: PhotoType[];
 	loading: boolean;
+	refreshFunction?: (
+		setRefreshing: Dispatch<SetStateAction<boolean>>
+	) => void;
 }) {
 	const [photoId, setPhotoId] = useState<string>("");
+	const [refreshing, setRefreshing] = useState<boolean>(false);
+
+	const onRefresh = () => {
+		// console.log("Refreshing");
+		refreshFunction && refreshFunction(setRefreshing);
+	};
+
 	return (
 		<GestureHandlerRootView>
-			<View className="bg-[#F8F1E8] w-full h-full">
+			<View className="bg-[#F8F1E8] w-full h-full flex">
 				<TopBar showBackButton={true} showShadow={true} />
 				{loading ? (
 					<View className="flex h-[80vh] items-center justify-center">
 						<Text className="text-xl font-bold">Loading...</Text>
 					</View>
-				) : photos.length === 0 ? (
+				) : photos === undefined || photos.length === 0 ? (
 					<View className="flex h-[80vh] items-center justify-center">
-						<Text className="text-xl font-bold">
-							No photos in this album
-						</Text>
+						<FlatList
+							data={[1]}
+							renderItem={({}) => (
+								<Text className="text-xl font-bold">
+									No photos in this album
+								</Text>
+							)}
+							keyExtractor={(item) => item.toString()}
+							onRefresh={onRefresh}
+							refreshing={refreshing}
+						/>
 					</View>
 				) : (
 					<FlatList
@@ -35,6 +54,9 @@ export default function PhotosView({
 							<PhotoCard photo={item} setCommentId={setPhotoId} />
 						)}
 						keyExtractor={(item) => item.id}
+						onRefresh={refreshFunction ? onRefresh : undefined}
+						refreshing={refreshing}
+						// progressViewOffset={100}
 					/>
 				)}
 			</View>

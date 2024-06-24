@@ -1,13 +1,15 @@
 "use client";
 import { createContext, useReducer, useState } from "react";
 import firestore from "@react-native-firebase/firestore";
-import type { Event } from "@lib/types";
+import type { Event, PhotoType } from "@lib/types";
 
 export type EventContextType = {
 	event?: Event;
 	eventId?: string;
 	fetchEvent: (eventId: string) => void;
 	setEvent: (event: EventReducerType) => void;
+	eventPhotos?: PhotoType[];
+	setEventPhotos: (photos: PhotoType[]) => void;
 };
 
 type EventReducerType = {
@@ -18,6 +20,8 @@ type EventReducerType = {
 export const EventContext = createContext<EventContextType | null>(null);
 
 export default function EventProvider({ children }: any) {
+	const [eventPhotos, setEventPhotos] = useState<PhotoType[]>([]);
+
 	const [event, setEvent] = useReducer(
 		(
 			state: EventReducerType,
@@ -49,6 +53,8 @@ export default function EventProvider({ children }: any) {
 				eventId: event.eventId,
 				fetchEvent,
 				setEvent,
+				eventPhotos,
+				setEventPhotos,
 			}}
 		>
 			{children}
