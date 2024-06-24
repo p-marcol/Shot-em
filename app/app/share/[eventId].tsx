@@ -1,5 +1,5 @@
 import { Text, View } from "react-native";
-import { useLocalSearchParams } from "expo-router";
+import { useGlobalSearchParams } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import QRCode from "react-native-qrcode-svg";
 import firestore, {
@@ -10,7 +10,7 @@ import BigOrangeButton from "components/BigOrangeButton";
 import { Event } from "@lib/types";
 
 export default function ShareEventId() {
-	const { eventId } = useLocalSearchParams();
+	const { eventId } = useGlobalSearchParams();
 	// console.log(eventId);
 	const [event, setEvent] = useState<Event>();
 

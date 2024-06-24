@@ -7,16 +7,16 @@ import {
 import * as ImagePicker from "expo-image-picker";
 import { useState, useContext } from "react";
 import { ImageContext, ImageContextType } from "providers/imageProvider";
-import { router, useLocalSearchParams } from "expo-router";
+import { Link, router } from "expo-router";
 
 type CameraControlsProps = {
+	eventId: string;
 	cameraToggle: () => void;
 	takePhoto: () => void;
 };
 
 export default function CameraControls(props: CameraControlsProps) {
 	const imageContext = useContext(ImageContext) as ImageContextType;
-	const { id } = useLocalSearchParams();
 
 	const pickImage = async () => {
 		let result = await ImagePicker.launchImageLibraryAsync({
@@ -35,13 +35,8 @@ export default function CameraControls(props: CameraControlsProps) {
 				imageAsset.width,
 				imageAsset.height
 			);
-			router.navigate(`event/[${id}]/showLatestImage`);
+			router.navigate(`event/[${props.eventId}]/showLatestImage`);
 		}
-	};
-
-	const openGallery = () => {
-		// console.log("Open gallery");
-		router.push("./gallery");
 	};
 
 	return (
@@ -54,9 +49,13 @@ export default function CameraControls(props: CameraControlsProps) {
 					className="bg-red-400 w-20 aspect-square rounded-full border-white border-8"
 					onPress={props.takePhoto}
 				/>
-				<Pressable onPress={openGallery}>
+				<Link
+					// @ts-ignore
+					href={`event/[${props.eventId}]/gallery`}
+					push
+				>
 					<UsersIcon size={48} color="black" />
-				</Pressable>
+				</Link>
 			</View>
 		</View>
 	);

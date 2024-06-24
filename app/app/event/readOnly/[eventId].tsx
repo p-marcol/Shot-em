@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import { View, FlatList } from "react-native";
-import { useLocalSearchParams } from "expo-router";
+import { useGlobalSearchParams } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { fetchEvent } from "@lib/fireStoreHelpers";
 import fetchEventPhotos from "@lib/fetchEventPhotos";
@@ -14,7 +14,7 @@ import MyBottomSheet from "components/MyBottomSheet";
 import PhotosView from "components/PhotosView";
 
 export default function EventPage() {
-	const { eventId } = useLocalSearchParams();
+	const { eventId } = useGlobalSearchParams();
 	const [eventDetails, setEventDetails] =
 		useState<FirebaseFirestoreTypes.DocumentData>();
 	const [eventPhotos, setEventPhotos] = useState<PhotoType[]>([]);

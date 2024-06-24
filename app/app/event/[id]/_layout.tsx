@@ -16,7 +16,7 @@ import {
 	UsersIcon,
 } from "react-native-heroicons/outline";
 import { EventContext, EventContextType } from "providers/eventProvider";
-import { router, useLocalSearchParams } from "expo-router";
+import { router, useGlobalSearchParams } from "expo-router";
 
 const iconSize = 30;
 const iconColor = "#000000";
@@ -81,7 +81,7 @@ export default function Layout() {
 	const { event, eventId, fetchEvent } = useContext(
 		EventContext
 	) as EventContextType;
-	const { id } = useLocalSearchParams();
+	const { id } = useGlobalSearchParams();
 
 	// console.log("ID:", id);
 	useLayoutEffect(() => {
@@ -154,6 +154,7 @@ export default function Layout() {
 										strokeWidth={iconStrokeWidth}
 									/>
 								),
+								// unmountOnBlur: true,
 							}}
 						/>
 						<Drawer.Screen
