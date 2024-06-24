@@ -53,7 +53,7 @@ export default function JoinAlbum() {
 	};
 
 	const joinEventwithQR = async (qrCode: BarcodeScanningResult) => {
-		console.log("QR");
+		// console.log("QR");
 		setScanned(true);
 		const accessCode = qrCode.data.replace("shotem://join/", "");
 		setCode(accessCode.split(""));

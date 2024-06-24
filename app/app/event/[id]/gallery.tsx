@@ -24,7 +24,7 @@ export default function Gallery() {
 
 	useFocusEffect(
 		useCallback(() => {
-			console.log("Gallery focused");
+			// console.log("Gallery focused");
 			setLoading(true);
 			fetchEventPhotos(eventId as string, user?.user.id as string)
 				.then((photos: PhotoType[]) => {
@@ -44,7 +44,7 @@ export default function Gallery() {
 		setRefreshing(true);
 		fetchEventPhotos(eventId as string, user?.user.id as string)
 			.then((photos) => {
-				console.log("photos fetched", DateTime.now().toISO());
+				// console.log("photos fetched", DateTime.now().toISO());
 				setEventPhotos(photos as PhotoType[]);
 			})
 			.finally(() => {

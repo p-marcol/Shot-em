@@ -1,6 +1,6 @@
 import { PhotoType } from "@lib/types";
-import { FlatList, GestureHandlerRootView } from "react-native-gesture-handler";
-import { Text, View } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { Text, View, FlatList } from "react-native";
 import PhotoCard from "./photoCard";
 import MyBottomSheet from "./MyBottomSheet";
 import TopBar from "./topbar";
@@ -54,7 +54,7 @@ export default function PhotosView({
 							<PhotoCard photo={item} setCommentId={setPhotoId} />
 						)}
 						keyExtractor={(item) => item.id}
-						onRefresh={refreshFunction ? onRefresh : undefined}
+						onRefresh={onRefresh}
 						refreshing={refreshing}
 						// progressViewOffset={100}
 					/>

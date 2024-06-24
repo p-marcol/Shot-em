@@ -29,6 +29,6 @@ export default async function addComment({
 			user: userId,
 			text: commentText,
 			timestamp: currentDate,
-		})
-		.then(() => console.log("Comment added"));
+		});
+	// .then(() => console.log("Comment added"));
 }
